@@ -4,10 +4,10 @@
   "version": "1.3.0",
   "author": {
     "name": "Goodrich-Dev",
-    "url": "https://github.com/Goodrich-Dev/google-ads-maa-skills"
+    "url": "https://github.com/Goodrich-Dev"
   },
-  "homepage": "https://github.com/Goodrich-Dev/google-ads-maa-skills",
-  "repository": "https://github.com/Goodrich-Dev/google-ads-maa-skills",
+  "homepage": "https://github.com/Local-Service-Spotlight/google-ads-maa-skills",
+  "repository": "https://github.com/Local-Service-Spotlight/google-ads-maa-skills",
   "license": "MIT",
   "keywords": ["google-ads", "maa", "ppc", "local-service", "reporting", "mcp"]
 }
