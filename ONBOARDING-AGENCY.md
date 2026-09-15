@@ -1,4 +1,4 @@
-# Agency Onboarding — Cowork + Google Ads MCP + the MAA Skill Suite
+# Agency Onboarding, Cowork + Google Ads MCP + the MAA Skill Suite
 
 A setup checklist for an agency adopting this suite in **Claude Cowork**, with
 their own Google Ads MCC. No hosted/managed-agent component is involved: the
@@ -9,12 +9,12 @@ per client.
 
 ---
 
-## Phase 0 — Credentials (yours, not ours)
+## Phase 0, Credentials (yours, not ours)
 
 Everything authenticates against **your own** Google Ads MCC and Google Cloud
 project. Nothing is shared with the publisher of this repo. You need:
 
-1. **Google Ads developer token** — from API Center in your MCC settings.
+1. **Google Ads developer token**, from API Center in your MCC settings.
    Basic access or higher for live client accounts (test tokens only reach
    test accounts).
 2. **A Google Cloud project** with the Google Ads API enabled.
@@ -22,44 +22,44 @@ project. Nothing is shared with the publisher of this repo. You need:
    MCC so every child account is reachable.
 
 ⚠️ **Publish the OAuth app to production before going live.** An app left in
-"Testing" status issues refresh tokens that expire after 7 days — this is the
+"Testing" status issues refresh tokens that expire after 7 days, this is the
 single most common cause of "the MCP stopped working," and it presents as
 daily reauthorization. See the reauthorization section of
 `shared/frameworks/mcp-setup-guide.md`.
 
-## Phase 1 — Stand up the Google Ads MCP
+## Phase 1, Stand up the Google Ads MCP
 
 Full detail in `shared/frameworks/mcp-setup-guide.md`. For Cowork specifically:
 
 - **Recommended: deploy to Cloud Run and add it as a custom connector**
   (Settings → Connectors → Add custom connector → your Cloud Run URL). Cowork
-  sessions run in the cloud, so a remote URL connector works everywhere — any
+  sessions run in the cloud, so a remote URL connector works everywhere, any
   team member, any device, scheduled runs included.
 - **Alternative: run it locally** via the desktop app's MCP config. Works, but
   the connector is only available while that desktop is online, which rules
   out unattended scheduled runs.
 
-Verify (5 min): ask Claude *"What customers do I have access to?"* — you
+Verify (5 min): ask Claude *"What customers do I have access to?"*, you
 should get your MCC's account list back. Then spot-check one campaign summary
 pull against the Google Ads UI (cost arrives in micros; divide by 1,000,000).
 
-## Phase 2 — Install the skill suite
+## Phase 2, Install the skill suite
 
 ```
-/plugin marketplace add Goodrich-Dev/google-ads-maa-skills
+/plugin marketplace add Local-Service-Spotlight/google-ads-maa-skills
 /plugin install google-ads-maa-skills
 ```
 
 Or install the packaged release zip from the repo's Releases page. Confirm the
 six skills appear (analyzer, copy-optimizer, change-scripts, lp-auditor,
 script, client-view). The suite is MIT-licensed; forking your own copy is fine
-and lets you pin versions — just pull upstream updates deliberately.
+and lets you pin versions, just pull upstream updates deliberately.
 
-## Phase 3 — Workspace and output configuration
+## Phase 3, Workspace and output configuration
 
 1. Connect a synced folder to Cowork sessions (Google Drive, Dropbox, or a
-   local folder via the desktop app) and tell Claude once per session — or put
-   it in a memory/instructions file — where deliverables go. That location is
+   local folder via the desktop app) and tell Claude once per session, or put
+   it in a memory/instructions file, where deliverables go. That location is
    `{OUTPUT_DIR}` (see `CONFIGURATION.md`).
 2. Pick a continuity mode per `CONFIGURATION.md`: the simple
    `{Client}_MAA-Narrative.md` file (zero structure, fine for most agencies
@@ -69,39 +69,81 @@ and lets you pin versions — just pull upstream updates deliberately.
    write them into a single overlay file in your workspace and tell Claude it
    overrides the skill defaults. Don't fork the skills to change style.
 
-## Phase 4 — Per-client onboarding (~10 min each)
+## Phase 4, Per-client onboarding (~1 hour, one run)
 
-1. From the Phase 1 verification list, record the client's **CID** (digits
-   only) wherever you keep per-client notes.
-2. Run the first MAA: *"Do a first-run MAA for {client}, CID {digits}, via the
-   Google Ads MCP."* The analyzer pulls 7D/30D campaign, keyword/QS, search
-   term, ad, and conversion data live, and the first report stands on its own.
-3. Answer the onboarding gaps the first run will surface — it will ask rather
-   than guess: client contact names/roles, target cost per lead, service
-   area, and whether competitor-name traffic is wanted or should be negated.
-   Feed the answers into the continuity file so week 2 has memory.
+Run the onboarding skill once per client:
 
-No weekly email script is required on the MCP path. Wire the email pipeline
-(`WALKTHROUGH.md`, Path B) only if you want a fallback for scheduled runs —
-and note the QS column-swap corrector applies **only** to that email path.
+> Onboard {client}, CID {digits}, website {url}. Primary contact {name, role}.
+> Vault folder {OUTPUT_DIR}/{client}/. Draft only.
 
-## Phase 5 — Weekly cadence
+It verifies access, scrapes 24 months of account history (all statuses, so
+inherited paused inventory is recorded as inherited), investigates the site
+and every landing page, builds the service-area test from the site and the
+90-day geo data, packages the questions only the client can answer, and
+writes the client folder: `compiled/ledger.md`, `data-sources.md`,
+`maa-metric-spec.md`, `lp-map.md`, `trend.csv` (13 weeks backfilled),
+`account-history.md`, and an onboarding brief for you.
 
-Use Cowork **scheduled tasks** for the weekly run — no managed agent needed.
-Each firing starts a fresh session, so the prompt must be standalone:
+Forward the intake ask to the client. Put the answers into the ledger
+(definitions, target CPL, service area, exclusions, seasonality). The whole
+account sits in a two-cycle quarantine, so the first two weekly MAAs report
+and watch; only foundation breaks become Actions.
 
-> Weekly Google Ads MAA for {client}. CID {digits}. Pull data via the Google
-> Ads MCP. Read {continuity file/folder path} first. Write the MAA to
-> {OUTPUT_DIR}/{client}/, then render the client view. Draft only — do not
-> send anything to the client.
+## Phase 5, Weekly cadence
+
+Use Cowork **scheduled tasks** for the weekly run. Each firing starts a fresh
+session, so the prompt must be standalone. Schedule it after your data drops
+(if you run the email fallback, after the export lands). This is the standard
+prompt; substitute the client block and keep the stages verbatim:
+
+> Weekly Google Ads MAA for {client}. CID {digits}, MCC {digits}. Client
+> folder: {OUTPUT_DIR}/{client}/. Draft only. Never post, never email, never
+> render the client view until I approve in chat.
+>
+> STAGE 0, READ BEFORE ANY DATA: compiled/ledger.md in full, then the
+> knowledge base, the metric spec, the shared overlay files, and the most
+> recent dated MAA. If the ledger is missing, stop and report.
+>
+> STAGE 0b, PULL: the full pack per gaql-query-pack.md "Pull discipline",
+> 7D and 30D, all statuses for inventory, paginated with counts recorded, raw
+> response saved. Email fallback only if the MCP is down; never splice.
+>
+> STAGE 1, DRAFT under shared/frameworks/evidence-gates.md, with the claim
+> register in Generation notes. Context questions are answered from the
+> ledger or added to its Open ASKs, never asked in chat.
+>
+> STAGE 2, HARDEN: dispatch google-ads-reviewer as a subagent with only the
+> frozen draft, the raw pack, the ledger and the spec. Apply its verdicts
+> once. One round.
+>
+> STAGE 3, RECONCILE against the ledger: numbers, watch-list age, quarantine,
+> cross-references, never-surface list, render norms.
+>
+> STAGE 4, WRAP: append the ledger and the trend row. Do not render. Finish
+> with an eight-line summary: leads and CPL vs last cycle, Actions proposed,
+> items demoted or dropped, open ASKs for me, data faults hit.
+
+**Daily check.** One scheduled task for the whole roster, not one per client.
+Schedule it after the accounts' day closes (early morning local). Prompt:
+
+> Run google-ads-daily-check across every account in
+> {OUTPUT_DIR}/_shared/daily-check-roster.md. Read only sections 2, 4 and 7
+> of each ledger. Exceptions only. Write each account's block to its delivery
+> target, append ledger lines per the skill, and finish with the one-line
+> summary. Change nothing. Do not post to any client.
 
 Two operating rules worth enforcing from day one:
 
 - **The MCP is read-only and stays that way.** Account changes ship as
   dry-run-first Google Ads Scripts via `google-ads-change-scripts`, reviewed
-  by a human before running live.
+  by a human before running live. When you run one, the ledger change log
+  gets a row; that row is the record, not `change_event`.
 - **Every deliverable is a draft.** The suite never posts to the client, your
   PM tool, or email on its own.
+
+What "5% oversight" looks like once the ledger has two cycles in it: read the
+eight-line summary, answer any ASK, approve the render, post. About five
+minutes per client per week.
 
 ## Troubleshooting quick hits
 
@@ -109,6 +151,8 @@ Two operating rules worth enforcing from day one:
 |---|---|---|
 | MCP tools missing at session start | OAuth lapsed | Reauthorize; publish OAuth app to production (Phase 0) |
 | "Unrecognized field" GAQL errors | API version drift | Use `get_resource_metadata` for the resource; update `gaql-query-pack.md` |
-| Zero-spend clutter in reports | Dormant campaigns included | They should be omitted entirely — see the data contract |
+| Analyzer asks context questions in chat on a weekly run | No ledger, or the ledger is missing the definition | Add the fact as a ledger line; the next run reads it |
+| Draft recommends pausing something on one week of data | Gates not applied, or the hardener was skipped | Check the Generation notes for the verdict ledger; re-run Stage 2 |
+| Zero-spend clutter in reports | Dormant campaigns included | They should be omitted entirely, see the data contract |
 | LSA campaign showing up in the MAA | LSA surfaced by the MCP | Out of scope by rule; omit (separate deliverable if wanted) |
 | QS components look wrong | Swap applied to MCP data | Never swap MCP data; the corrector is email-path only |

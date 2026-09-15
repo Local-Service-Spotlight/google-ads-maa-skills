@@ -1,4 +1,4 @@
-# Google Ads Script — Code Patterns Reference
+# Google Ads Script, Code Patterns Reference
 
 Copy-paste-ready utility functions for common operations across Google Ads Scripts. Each pattern is production-ready with error handling and JSDoc comments.
 
@@ -437,7 +437,7 @@ function sendErrorReport(errors, scriptName) {
 
   const errorSummary = collectErrors(errors);
   sendAlert(
-    scriptName + ' — Error Report',
+    scriptName + ', Error Report',
     errorSummary
   );
 }
@@ -631,7 +631,7 @@ function applyLabelToEntities(entities, labelName) {
  */
 function logInfo(msg) {
   const timestamp = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
-  Logger.log('[INFO] ' + timestamp + ' — ' + msg);
+  Logger.log('[INFO] ' + timestamp + ', ' + msg);
 }
 ```
 
@@ -643,7 +643,7 @@ function logInfo(msg) {
  */
 function logWarning(msg) {
   const timestamp = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
-  Logger.log('[WARN] ' + timestamp + ' — ' + msg);
+  Logger.log('[WARN] ' + timestamp + ', ' + msg);
 }
 ```
 
@@ -655,7 +655,7 @@ function logWarning(msg) {
  */
 function logError(msg) {
   const timestamp = Utilities.formatDate(new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
-  Logger.log('[ERROR] ' + timestamp + ' — ' + msg);
+  Logger.log('[ERROR] ' + timestamp + ', ' + msg);
 }
 ```
 
@@ -664,7 +664,7 @@ function logError(msg) {
 ## Usage Notes
 
 - **Sheet helpers**: Always pair `getOrCreateSheet()` with `writeHeaders()` for consistent formatting.
-- **Batch operations**: Use batch writes (`appendRows`) instead of row-by-row for >100 rows—10x faster.
+- **Batch operations**: Use batch writes (`appendRows`) instead of row-by-row for >100 rows, 10x faster.
 - **Date handling**: Always pass timezone explicitly (e.g., `'America/New_York'`) for consistency across reports.
 - **GAQL**: Use `queryAll()` for large datasets; it handles pagination automatically.
 - **MCC**: Return JSON strings from worker functions; aggregate in `afterAllAccounts()`.

@@ -11,7 +11,7 @@ serve dual purposes:
 ## Export Instructions for Account Managers
 
 When the user needs to manually export data, provide these instructions tailored
-to whichever reports are needed. Don't dump all of them at once — request only
+to whichever reports are needed. Don't dump all of them at once, request only
 what the current diagnostic tier requires.
 
 ### Campaign Summary Export

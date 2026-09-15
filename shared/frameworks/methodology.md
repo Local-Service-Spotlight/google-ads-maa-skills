@@ -1,4 +1,4 @@
-# MAA Methodology — How These Skills Think
+# MAA Methodology, How These Skills Think
 
 The skills in this package implement the MAA (Metrics → Analysis → Action)
 approach to managing Google Ads for local service businesses. The full
@@ -34,6 +34,29 @@ warrants an action item, unless the signal is dramatic and obvious. When in
 doubt, note the observation in Analysis ("worth watching") rather than
 escalating to Action.
 
+## The ledger and the gates (1.5.0)
+
+Every client carries a ledger (`ledger-template.md`): definitions, standing
+rules, change log, watch list, recent-change quarantine, render spec, known
+data faults. The analyzer reads it before any data and appends it after every
+cycle. It replaces the memory a human operator otherwise supplies by hand,
+which on live accounts was about 40% of all human interventions.
+
+Findings become Actions only through the evidence gates
+(`evidence-gates.md`): minimum sample, two-cycle persistence on the watch
+list, a 14-day quarantine on recent changes, splits before verdicts, no
+absence claims on capped queries, definitions from the ledger, and a claim
+register for every causal sentence. Foundation breaks are exempt.
+
+## The weekly pipeline
+
+Read the ledger, pull the full pack, draft under the gates, harden in a fresh
+context (`google-ads-reviewer` returns KEEP / DEMOTE / DROP / REPULL per
+finding), reconcile against the ledger, append the ledger, stop. The human
+reads an eight-line summary and approves the render. New clients enter through
+`google-ads-onboarding`, which writes the first ledger and quarantines the
+whole account for two cycles.
+
 ## The quarterback model
 
 `google-ads-analyzer` is the quarterback. When diagnosis reveals a problem a
@@ -48,8 +71,10 @@ execute immediately:
 | Ad group restructure needed | `google-ads-change-scripts` | Keywords to move, source/destination ad groups, match types |
 | Ad rated POOR/AVERAGE strength | `google-ads-copy-optimizer` | Current headlines/descriptions, strength rating, top search terms |
 
-`google-ads-script` sits underneath all of this — it builds the data pipeline
+`google-ads-script` sits underneath all of this, it builds the data pipeline
 (see `data-pipeline-contract.md`) and other ongoing automation.
+
+`google-ads-reviewer` sits between the draft and the render as the hardener.
 
 `google-ads-client-view` is the final step. Once the MAA is written, it renders
 a client-facing version (plain-language summary plus two 13-week trend charts)

@@ -15,7 +15,7 @@ python3 shared/scripts/correct_qs_columns.py --infile {date}_email-data.txt
 ```
 
 Writes `{date}_email-data_corrected.txt` next to the input. Analyze the
-`_corrected.txt` file and read every column **as labeled** — do not swap again;
+`_corrected.txt` file and read every column **as labeled**, do not swap again;
 double-swapping re-introduces the bug. Keep the raw file verbatim for the
 record.
 

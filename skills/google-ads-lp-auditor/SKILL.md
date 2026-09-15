@@ -10,7 +10,7 @@ description: >
   page", "why is my LP Experience below average", "page isn't converting", "audit
   this URL for Google Ads", "what's wrong with my landing page", or any request to
   evaluate a landing page against the ads pointing to it. This skill produces
-  findings formatted for insertion into an MAA — it is not a standalone website
+  findings formatted for insertion into an MAA, it is not a standalone website
   audit tool.
 ---
 
@@ -19,7 +19,7 @@ description: >
 ## What This Skill Does
 
 This skill audits a landing page in the context of the Google Ads campaign
-pointing to it. The output isn't a generic website review — it's a focused
+pointing to it. The output isn't a generic website review, it's a focused
 assessment of whether the page is helping or hurting the ads' performance,
 organized for direct insertion into an MAA document.
 
@@ -43,13 +43,13 @@ reviewed in the context of their Google Ads data.
 The skill needs these inputs to produce useful findings. When dispatched by the
 analyzer, these come from the MAA data. When invoked directly, ask the user.
 
-1. **Landing page URL** — the actual URL traffic is hitting (check final URLs
+1. **Landing page URL**, the actual URL traffic is hitting (check final URLs
    in the ad data, not just the display URL)
-2. **Ad copy** — the RSA headlines and descriptions currently running. These
+2. **Ad copy**, the RSA headlines and descriptions currently running. These
    define what the visitor was promised before they clicked.
-3. **QS component data** — specifically the Landing Page Experience rating and
+3. **QS component data**, specifically the Landing Page Experience rating and
    Ad Relevance rating for the top-spend keywords pointing to this page.
-4. **Campaign context** — what the business sells, the target CPA, the
+4. **Campaign context**, what the business sells, the target CPA, the
    conversion action (calls, forms, purchases), and who the audience is.
 
 Optional but valuable:
@@ -113,7 +113,7 @@ motivated visitor to convert.
 **Form/conversion path:**
 - How many fields? Every field above 3-4 reduces completion rate.
 - Is the form asking for information that feels premature? (Revenue
-  qualifiers, detailed project descriptions — before trust is built)
+  qualifiers, detailed project descriptions, before trust is built)
 - Is the submit button clear and action-oriented? ("Get My Free Estimate"
   beats "Submit")
 
@@ -141,7 +141,7 @@ usability, and content relevance. This layer assesses the technical factors.
   - **LCP (Largest Contentful Paint)**: >2.5s is a problem. Google considers
     this the primary loading metric.
   - **TBT/INP (Total Blocking Time / Interaction to Next Paint)**: High TBT
-    means JavaScript is blocking the main thread — the page feels sluggish.
+    means JavaScript is blocking the main thread, the page feels sluggish.
   - **CLS (Cumulative Layout Shift)**: Elements jumping around as the page
     loads erodes trust and usability.
 - Lab scores matter more than field scores for LP Experience assessment.
@@ -174,25 +174,25 @@ The skill produces two outputs, both formatted for MAA insertion:
 
 This goes into the MAA's Analysis section. It should:
 - Lead with the finding, not the methodology ("The page doesn't match the
-  ad's promise" — not "We audited the landing page and found...")
+  ad's promise", not "We audited the landing page and found...")
 - Connect the LP finding to the QS component data ("Below Average LP
   Experience makes sense when you see the disconnect...")
 - Be specific about what the gap is, not generic ("The ad promises a free
-  maps audit, the page leads with a $1,500/month service qualifier" — not
+  maps audit, the page leads with a $1,500/month service qualifier", not
   "There's a mismatch between the ad and the page")
 - Acknowledge what the page does well before listing problems. Many of these
-  pages were built with care — don't make the page owner feel attacked.
+  pages were built with care, don't make the page owner feel attacked.
 
 ### 2. Action Items (2-3 bullets, max)
 
 These go into the MAA's Action section. Each one should:
-- Name a specific change, not a category ("Move the form above the fold" —
+- Name a specific change, not a category ("Move the form above the fold",
   not "Improve the page layout")
 - Explain why it matters, linked to the analysis ("Right now visitors scroll
-  past 1,500 words before they can take action — on mobile that's 4+ screens")
+  past 1,500 words before they can take action, on mobile that's 4+ screens")
 - Note the expected impact on QS or conversion rate where possible
 - If the change requires website access the team doesn't have, include the
-  offer pattern: "We can help with this if you'd like — we'd just need
+  offer pattern: "We can help with this if you'd like, we'd just need
   [website access / CMS login / Elementor access]."
 
 **Keep it tight.** The LP audit findings are one component of the MAA, not
@@ -210,7 +210,7 @@ paragraph and one action item is enough.
   page copy recommendations stay at the directional level)
 
 If the audit reveals that the page needs a significant rewrite or redesign,
-say so — but the specific implementation is outside this skill's scope. The
+say so, but the specific implementation is outside this skill's scope. The
 MAA action item should frame it as a recommendation with an offer to help,
 not a detailed spec.
 

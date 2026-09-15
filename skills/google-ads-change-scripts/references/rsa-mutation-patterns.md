@@ -74,7 +74,7 @@ function updateRsaHeadlines(adGroupAd, newHeadlines, newDescriptions) {
 
 - The `updateMask` field tells the API which fields to update. Only include the
   fields you're changing.
-- When updating headlines or descriptions, you must provide the COMPLETE list —
+- When updating headlines or descriptions, you must provide the COMPLETE list,
   not just the ones you're changing. The API replaces the entire array.
 - Pin positions use the enum: `HEADLINE_1`, `HEADLINE_2`, `HEADLINE_3`,
   `DESCRIPTION_1`, `DESCRIPTION_2`.

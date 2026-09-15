@@ -10,7 +10,7 @@ description: >
   "improve my ad copy", "fix ad relevance", "RSA recommendations", "what should my
   headlines say", "ad strength is Poor/Average", "rewrite these ads", "extension
   suggestions", or any request to produce specific Google Ads copy based on performance
-  data. This is the copywriting skill — it produces the actual text. Use
+  data. This is the copywriting skill, it produces the actual text. Use
   google-ads-analyzer for diagnosis and google-ads-script for automation scripts.
 ---
 
@@ -22,14 +22,14 @@ This skill produces ready-to-paste RSA headlines, descriptions, and extension te
 for Google Ads campaigns. It bridges the gap between diagnosis ("your ad relevance
 is Below Average") and implementation ("here are 15 headlines to test").
 
-Every recommendation connects back to data — search terms people actually used,
+Every recommendation connects back to data, search terms people actually used,
 Quality Score components that need improvement, or competitive gaps the current
 copy doesn't address. This isn't generic copywriting advice. It's specific text
 tied to what the account data shows.
 
 **Where this fits in the pipeline:** The google-ads-analyzer (MAA) diagnoses the
-account and identifies what needs fixing. This skill takes those findings —
-especially QS component breakdowns, search term data, and ad strength ratings —
+account and identifies what needs fixing. This skill takes those findings,
+especially QS component breakdowns, search term data, and ad strength ratings,
 and produces the actual text. If the changes need to be applied in bulk, the
 google-ads-change-scripts skill can turn this output into executable scripts.
 
@@ -56,14 +56,14 @@ collect as much of the following as possible:
   Landing Page Experience) are Below Average? Each one points to a different copy
   fix.
 - **Current ad copy**: What headlines and descriptions are already running? Don't
-  duplicate — improve and diversify.
+  duplicate, improve and diversify.
 - **Ad strength rating**: Poor or Average usually means not enough thematic
   diversity across headlines. Google wants to see distinct angles, not 15
   variations of the same phrase.
 - **Landing page content**: Headlines that promise something the landing page
   doesn't deliver will tank Landing Page Experience. Check alignment.
 - **Service area and business context**: Local service businesses need geographic
-  relevance in their copy — city names, neighborhood references, service area
+  relevance in their copy, city names, neighborhood references, service area
   signals.
 
 If the user comes in with an MAA already completed, most of this is already
@@ -93,15 +93,15 @@ what the copy needs. This mapping is the core diagnostic logic of the skill.
 The ads aren't compelling enough to earn clicks relative to competitors.
 
 **What to fix:**
-- Headlines need stronger hooks — specificity beats generality. "24/7 Emergency
+- Headlines need stronger hooks, specificity beats generality. "24/7 Emergency
   Plumber in Denver" beats "Professional Plumbing Services"
-- Add urgency or scarcity where appropriate: "Same-Day Service", "Book Today —
+- Add urgency or scarcity where appropriate: "Same-Day Service", "Book Today,
   Slots Filling Fast"
 - Include the core keyword naturally in Headline 1 or 2. Google weights early
   headlines heavily for relevance matching
 - Test emotional angles: problem-aware ("Leaking Pipes?"), solution-aware
   ("Licensed Plumber Near You"), outcome-aware ("Get Your Water Flowing Again")
-- Check if competitors are using offers or social proof that you aren't —
+- Check if competitors are using offers or social proof that you aren't,
   "Rated 4.9 Stars", "500+ 5-Star Reviews", "$50 Off First Service"
 
 ### Ad Relevance: Below Average
@@ -110,7 +110,7 @@ The ad copy doesn't match what people are searching for closely enough.
 
 **What to fix:**
 - Pull exact phrases from the search term report into headlines. If people search
-  "dumpster rental Dallas", a headline should say "Dumpster Rental in Dallas" —
+  "dumpster rental Dallas", a headline should say "Dumpster Rental in Dallas",
   not "Waste Management Solutions"
 - Create keyword-specific ad groups if one ad group serves too many intents.
   Generic copy trying to cover "dumpster rental" and "junk removal" and "roll off
@@ -125,7 +125,7 @@ The ad copy doesn't match what people are searching for closely enough.
 
 The landing page doesn't deliver what the ad promises, or has UX issues.
 
-**What copy can do (limited — this is mostly a landing page problem):**
+**What copy can do (limited, this is mostly a landing page problem):**
 - Align ad language with landing page language. If the landing page says "house
   painting" but the ad says "residential painting services," that mismatch hurts
 - Remove promises from headlines that the landing page doesn't back up. Don't
@@ -134,7 +134,7 @@ The landing page doesn't deliver what the ad promises, or has UX issues.
   Pricing | View Our Work | Get a Free Quote"
 
 **What to flag for a separate LP fix:**
-- Slow load times, poor mobile experience, thin content, missing trust signals —
+- Slow load times, poor mobile experience, thin content, missing trust signals,
   these are landing page issues, not copy issues. Note them for the AM but don't
   try to solve them through ad copy alone
 
@@ -149,7 +149,7 @@ These are the workhorses. They include the primary keyword and geographic modifi
 At least one should be pin-worthy for H1.
 
 > "Dumpster Rental in Dallas TX"
-> "Roll Off Dumpsters — Dallas Area"
+> "Roll Off Dumpsters, Dallas Area"
 > "Same-Day Dumpster Delivery Dallas"
 
 **Slots 4-6: Differentiators**
@@ -162,7 +162,7 @@ What makes this business different from the next Google result?
 **Slots 7-9: Urgency / CTA**
 Drive the click with action language.
 
-> "Call Now — Same-Day Service"
+> "Call Now, Same-Day Service"
 > "Book Online in 2 Minutes"
 > "Get Your Free Quote Today"
 
@@ -171,25 +171,25 @@ What does the customer get? Think past the service to the result.
 
 > "Clean Up Your Property Fast"
 > "Hassle-Free Rental Process"
-> "Transparent Pricing — No Hidden Fees"
+> "Transparent Pricing, No Hidden Fees"
 
 **Slots 13-15: Offer / social proof / seasonal**
 Rotational slots that can be swapped as offers or seasons change.
 
 > "$25 Off Your First Rental"
 > "500+ Happy Customers in DFW"
-> "Spring Cleanup Special — Book Now"
+> "Spring Cleanup Special, Book Now"
 
 ### Headline Rules
 
-- **30 characters max** per headline. This is a hard limit — not a suggestion.
+- **30 characters max** per headline. This is a hard limit, not a suggestion.
   Count characters carefully. Headlines over 30 characters will be rejected by
   Google Ads.
 - **No redundancy.** Google penalizes RSAs where multiple headlines say the same
   thing differently. "Professional Plumbing" and "Expert Plumbing Services" are
   too similar. Each headline should introduce a new idea.
 - **At least 3 headlines should be combinable with any other.** Google assembles
-  RSAs dynamically — some headline pairs will look awkward together. Write with
+  RSAs dynamically, some headline pairs will look awkward together. Write with
   combinations in mind.
 - **Include the keyword in at least 2-3 headlines**, but don't stuff it into all
   15. Google needs variety to test combinations.
@@ -224,18 +224,18 @@ How does it work? Reduce friction by previewing the experience.
 Rotational slot that speaks to specific segments or promotions.
 
 > "Perfect for home renovations, construction cleanups, and estate cleanouts.
-> Multiple sizes available — call for same-day availability."
+> Multiple sizes available, call for same-day availability."
 
 ### Description Rules
 
 - **90 characters max** per description. Count carefully.
-- Each description should stand on its own — they don't always show together.
+- Each description should stand on its own, they don't always show together.
 - Include a CTA in at least one description (ideally Description 1).
 - Reference the geographic area in at least one description.
 
 ## Extensions and Assets
 
-Extensions expand the ad's footprint and improve CTR. They're free real estate —
+Extensions expand the ad's footprint and improve CTR. They're free real estate,
 every campaign should have them.
 
 ### Sitelinks (minimum 4, ideally 8)
@@ -257,7 +257,7 @@ and a destination URL.
 
 > **Title**: "Get a Free Quote"
 > **Desc 1**: "Request your custom quote in"
-> **Desc 2**: "under 2 minutes — no obligation."
+> **Desc 2**: "under 2 minutes, no obligation."
 > **URL**: /quote
 
 > **Title**: "Customer Reviews"
@@ -289,7 +289,7 @@ When delivering copy recommendations, structure the output clearly so the AM can
 act on it directly. Use this format:
 
 ```markdown
-# Ad Copy Recommendations — [Client Name]
+# Ad Copy Recommendations, [Client Name]
 ## Generated: [Date]
 
 ### Context
@@ -340,4 +340,4 @@ at the repo root for the configurable base location):
 - **Fix landing pages.** If Landing Page Experience is the issue, this skill flags
   it and suggests copy alignment, but the actual LP fix is out of scope.
 - **Write for Meta/Facebook, Display image ads, or Video.** This is Google Search
-  text copy — RSAs, extensions, and assets.
+  text copy, RSAs, extensions, and assets.

@@ -16,8 +16,8 @@ URLs, brand exclusion lists.
 **Process**:
 1. Map every query to an intent tier (Tier 0: brand, Tier 1: high-intent
    transactional, Tier 2: evaluative/consideration, Tier 3: problem/symptom)
-2. Identify coverage gaps — intent tiers with few or no queries
-3. Identify conflicts — brand queries leaking into non-brand campaigns, PMax
+2. Identify coverage gaps, intent tiers with few or no queries
+3. Identify conflicts, brand queries leaking into non-brand campaigns, PMax
    claiming Search queries
 4. Produce a re-routing plan: which queries belong where, which need new
    campaigns or ad groups
@@ -36,7 +36,7 @@ lift metrics.
 **Process**:
 1. Evaluate RSA asset mix: which headlines and descriptions have "Best", "Good",
    "Low" ratings?
-2. Compare CTR vs. Quality Score Expected CTR — divergence suggests the ad is
+2. Compare CTR vs. Quality Score Expected CTR, divergence suggests the ad is
    compelling but misaligned with the keyword
 3. Analyze landing page cohorts: CVR and bounce by LP template
 4. Check Core Web Vitals and form friction indicators
@@ -57,7 +57,7 @@ Budget vs. Rank), ROAS vs. Impression Share curves.
    Identify which are hitting target with headroom, which are at capacity, and
    which are missing target.
 2. **Price Elasticity**: Plot ROAS vs. Impression Share at varying spend levels.
-   Find the efficient frontier — the point where incremental spend yields
+   Find the efficient frontier, the point where incremental spend yields
    diminishing returns.
 3. **Reallocation Model**: Shift budget from campaigns past their efficient
    frontier to campaigns with headroom. Consider shared budgets or portfolio
@@ -108,7 +108,7 @@ COGS/variable costs if available.
 
 **Process**: Calculate EPPC by keyword or ad group. Rank by EPPC to identify
 which keywords actually make money vs. which look good on CPA but don't convert
-downstream. This is the ultimate balanced metric — it captures the full funnel.
+downstream. This is the ultimate balanced metric, it captures the full funnel.
 
 ## Experimentation Protocol (Detailed)
 

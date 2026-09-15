@@ -29,7 +29,7 @@ Three ways to feed the analyzer, in priority order (full rules in
 
 1. **Google Ads MCP** (recommended). Connect a Google Ads MCP server and record
    each client's CID. The analyzer pulls every dataset live via GAQL
-   (`shared/frameworks/gaql-query-pack.md`) — correctly-labeled data, no email
+   (`shared/frameworks/gaql-query-pack.md`), correctly-labeled data, no email
    plumbing, and mid-analysis follow-up pulls. The MCP is read-only; account
    changes still go through change scripts.
 2. **Automated weekly email** (fallback / backup for scheduled runs). Use
@@ -42,13 +42,22 @@ Three ways to feed the analyzer, in priority order (full rules in
 
 If your collection script has the known Quality Score column-swap bug (email
 path only), run `shared/scripts/correct_qs_columns.py` on the raw data at
-ingest — see the data-pipeline contract for detail. Never apply the swap to MCP
+ingest, see the data-pipeline contract for detail. Never apply the swap to MCP
 data.
+
+## The client ledger (required from 1.5.0)
+
+Every client has one ledger file the analyzer reads before any data pull and
+appends after every cycle: `{Client}_Ledger.md` in simple mode, or
+`compiled/ledger.md` in knowledge-base mode. Format and maintenance rules in
+`shared/frameworks/ledger-template.md`. `google-ads-onboarding` writes it for
+a new client; for an existing client the analyzer bootstraps one from the
+continuity files on its next run and marks unconfirmed facts `(verify)`.
 
 ## Optional: client continuity
 
 Without any setup, every MAA stands on its own. To give the analyzer memory
-across weeks, pick one of two modes — it auto-detects which one you're using by
+across weeks, pick one of two modes, it auto-detects which one you're using by
 what exists in the client's folder.
 
 ### Simple mode: a narrative file
@@ -89,6 +98,6 @@ from the most recent archived MAA (or from the first run's own structure for a
 brand-new client) before writing the report.
 
 A vault-level overlay file (e.g. `clients/_shared/maa-skills-binding.md`) may
-override any generic convention in these skills — file naming, section ordering,
+override any generic convention in these skills, file naming, section ordering,
 house style. If the client's knowledge base contains one, it wins over this
 document and over the skill defaults.

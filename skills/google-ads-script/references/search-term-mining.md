@@ -42,14 +42,14 @@ WHERE campaign.status = "ENABLED"
 
 **Key fields explained:**
 
-- `search_term_view.search_term` — The actual query a user searched
-- `search_term_view.status` — One of three values:
-  - `ADDED` — Term is already added as a keyword in the account
-  - `EXCLUDED` — Term is already added as a negative keyword
-  - `NONE` — Term has triggered ads but no keyword action has been taken yet
-- `keyword.info.text` and `.match_type` — The keyword (if any) that matched this search term
-- `metrics.cost_micros` — Cost in microdollars; divide by 1,000,000 for USD
-- `metrics.conversions` — Conv count; 0 means no conversions from this term
+- `search_term_view.search_term`, The actual query a user searched
+- `search_term_view.status`, One of three values:
+  - `ADDED`, Term is already added as a keyword in the account
+  - `EXCLUDED`, Term is already added as a negative keyword
+  - `NONE`, Term has triggered ads but no keyword action has been taken yet
+- `keyword.info.text` and `.match_type`, The keyword (if any) that matched this search term
+- `metrics.cost_micros`, Cost in microdollars; divide by 1,000,000 for USD
+- `metrics.conversions`, Conv count; 0 means no conversions from this term
 
 **Note:** This query returns all search terms. Filter and flag within the script using the waste detection logic.
 
@@ -146,15 +146,15 @@ Write flagged terms to a Google Sheet with three tabs:
 | 2026-03-27 | HVAC Spring | AC Install | how to install ac | ac installation | 8 | 2 | $15.80 | 0 | N/A | Matches known waste pattern (DIY) | Add Negative |
 
 **Columns:**
-- **Date** — When the term was flagged (run date)
-- **Campaign** — Campaign name from the query
-- **Ad Group** — Ad group name from the query
-- **Search Term** — The actual search query
-- **Matched Keyword** — The keyword that triggered this term (helps you understand why the ad showed)
-- **Impressions, Clicks, Cost, Conversions** — Raw metrics
-- **CPA** — Cost ÷ Conversions (blank if no conversions)
-- **Flag Reason** — Why it was flagged (pull from waste detection logic)
-- **Action** — Dropdown with three values: "Add Negative", "Ignore", "Review" (default is "Review")
+- **Date**, When the term was flagged (run date)
+- **Campaign**, Campaign name from the query
+- **Ad Group**, Ad group name from the query
+- **Search Term**, The actual search query
+- **Matched Keyword**, The keyword that triggered this term (helps you understand why the ad showed)
+- **Impressions, Clicks, Cost, Conversions**, Raw metrics
+- **CPA**, Cost ÷ Conversions (blank if no conversions)
+- **Flag Reason**, Why it was flagged (pull from waste detection logic)
+- **Action**, Dropdown with three values: "Add Negative", "Ignore", "Review" (default is "Review")
 
 **Sort by Cost descending** so the biggest waste floats to the top.
 
@@ -389,7 +389,7 @@ const CONFIG = {
   DATE_RANGE: "LAST_30_DAYS", // or "LAST_7_DAYS", "LAST_90_DAYS"
 
   // Waste detection thresholds
-  MIN_COST_THRESHOLD: 20, // dollars — flag zero-conv terms above this cost
+  MIN_COST_THRESHOLD: 20, // dollars, flag zero-conv terms above this cost
   MAX_CPA_MULTIPLIER: 2.0, // flag terms with CPA > (account avg CPA × multiplier)
 
   // Auto-add settings

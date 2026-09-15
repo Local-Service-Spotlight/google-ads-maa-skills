@@ -4,10 +4,10 @@
 
 The Conversion Health Check pattern audits whether conversion actions are actually firing in Google Ads accounts. This script catches broken tracking **before** it appears in an MAA report by monitoring:
 
-1. **Campaigns with active spend but zero conversions** — Strong signal of tracking failure
-2. **Sudden drops in conversion rate** — Catches partial tracking breaks (some conversions still fire, but most don't)
-3. **Conversion actions that have stopped recording** — Identifies disabled or broken actions
-4. **High CTR with zero conversions** — Most reliable indicator of broken tracking or dead landing pages
+1. **Campaigns with active spend but zero conversions**, Strong signal of tracking failure
+2. **Sudden drops in conversion rate**, Catches partial tracking breaks (some conversions still fire, but most don't)
+3. **Conversion actions that have stopped recording**, Identifies disabled or broken actions
+4. **High CTR with zero conversions**, Most reliable indicator of broken tracking or dead landing pages
 
 The script runs daily, flags issues by severity (CRITICAL/WARNING/INFO), and logs results to a spreadsheet and email alert. Use for accountability: managers can see exactly when tracking broke and when it was fixed.
 
@@ -151,7 +151,7 @@ Conversions: 0
 
 ### Check 4: CTR vs CVR Sanity Check
 
-**Purpose:** Most reliable signal of tracking breakage — high engagement but zero conversions is unnatural.
+**Purpose:** Most reliable signal of tracking breakage, high engagement but zero conversions is unnatural.
 
 **Logic:**
 ```
@@ -201,7 +201,7 @@ INFO      → CVR dropped 25-50% (monitor but not urgent)
 
 **Subject Line Example:**
 ```
-[Conv Health] CRITICAL: Local HVAC Services — Campaign "Emergency Service" has $1,245 spend with 0 conversions
+[Conv Health] CRITICAL: Local HVAC Services, Campaign "Emergency Service" has $1,245 spend with 0 conversions
 ```
 
 **Body Structure (HTML table):**
@@ -457,7 +457,7 @@ const CONFIG = {
 **Timing:** 8:00 AM account's local timezone
 
 **Why daily?**
-- Tracking issues compound fast — waiting a week means lost revenue
+- Tracking issues compound fast, waiting a week means lost revenue
 - Morning alert gives team time to diagnose and fix
 - Early detection = less data loss
 
@@ -580,7 +580,7 @@ function shouldCheckCampaign(campaign) {
 
 ### API Rate Limits
 
-- MCC scripts can execute across many accounts — if you hit rate limits, add throttling:
+- MCC scripts can execute across many accounts, if you hit rate limits, add throttling:
   ```javascript
   Utilities.sleep(100); // 100ms between API calls
   ```
@@ -669,9 +669,9 @@ function testSheet() {
 ```
 
 **Before going live:**
-1. Run `testGAQL()` — verify you're getting campaign data
-2. Run `testEmail()` — verify email goes to your inbox
-3. Run `testSheet()` — verify rows appear in the sheet
-4. Manually run `main()` once — check output in Logs
+1. Run `testGAQL()`, verify you're getting campaign data
+2. Run `testEmail()`, verify email goes to your inbox
+3. Run `testSheet()`, verify rows appear in the sheet
+4. Manually run `main()` once, check output in Logs
 5. Schedule the script for daily execution
 

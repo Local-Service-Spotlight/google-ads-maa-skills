@@ -5,14 +5,15 @@ description: >
   markdown client view AND a paste-ready HTML version (built for Basecamp, works
   in any rich-text editor), both led by a one-paragraph summary, two 13-week
   trend charts (leads, cost per lead), emoji-flagged critical items, and a
-  separated client to-do, with the full MAA preserved below. It does NO new
+  separated client to-do, with the full analysis rewritten in client
+  language below (per the client ledger's render spec). It does NO new
   analysis: every line is DERIVED from the source MAA, never invented. Runs as
   the final step after the weekly MAA is written. Trigger on "render the client
   view", "Basecamp version of the MAA", "client report for {client}", or
   "client-facing version of this MAA". Google Ads only.
 ---
 
-# Google Ads Client View — MAA Render Stage
+# Google Ads Client View, MAA Render Stage
 
 ## What this skill does
 
@@ -29,9 +30,15 @@ client-facing layer that sits on top of it, in two formats:
    constraints make it safe for most rich-text editors. The two charts are
    dragged in as PNGs.
 
-The full MAA is reproduced **verbatim, in skill bullet format**, below the
-summary in both formats, so nothing is lost. The goal is to solve "too dense for
-the average owner" by leading with a 30-second read, not by removing depth.
+The Full analysis section below the summary is **rewritten in client language**,
+not reproduced verbatim. It is still a projection of the MAA (see the Cardinal
+Rule), but it strips the internal material the client's render spec lists and
+carries only the Actions with a client-visible outcome. The goal is to solve "too
+dense for the average owner" by leading with a 30-second read and by filtering
+the internals, not by adding new analysis.
+
+**Size check:** the client view should run about one third of the MAA's length.
+If it is over half the MAA's length, it has not been filtered. Cut again.
 
 ## What this skill does NOT do
 
@@ -89,15 +96,23 @@ actions for the client view. If the client is multi-platform and the MAA bundles
 several channels, use only the Google Ads section.
 
 If a per-client spec exists (campaign list, top-N metric, target CPA), read it for
-the chart target line. If no dated MAA exists for the period, stop — there is
+the chart target line. If no dated MAA exists for the period, stop, there is
 nothing to render, build the MAA first.
+
+**Read the client ledger's render spec before rendering.** Section 8 of the
+client ledger (format: `../../shared/frameworks/ledger-template.md`) holds the
+per-client render spec: action count norm, bullet norms, tone notes, status-dot
+conventions, chart target line, and the strip list for the Full analysis
+section. **The ledger overrides the defaults in this skill** wherever the two
+disagree. If the ledger has no render spec yet, use the defaults here and note
+that in the run.
 
 ## Step 2: Build the 13-week chart data
 
 The charts plot history, so they need the trailing ~13 weeks, not just this week.
 Preferred source, in order:
 
-1. **`{OUTPUT_DIR}/{Client Name}/trend.csv`** — a per-client trend file you append
+1. **`{OUTPUT_DIR}/{Client Name}/trend.csv`**, a per-client trend file you append
    to each week. Columns: `week,leads,cpl_week,cpl_30d`. This is the deterministic
    path, no prose parsing.
 2. **Fallback:** if the trend file is absent, assemble the series by reading the
@@ -138,10 +153,10 @@ each section may draw from.
 | **The bottom line** (1 paragraph) | The MAA's opening / bottom-line paragraph, lightly trimmed. Plain language, no QS/IS/CPA jargon above the fold. **Keep it confident: do not end the above-the-fold summary on a caveat.** On a strong week the client's first read should carry the win; a hedge like "bookings were light, we're keeping an eye on it" belongs down in the 🟡 section, not in the opening paragraph. Trim a trailing caveat sentence rather than leading the eye to it. |
 | **The trend** (2 charts) | The PNGs from Step 2. Caption only if needed; no value judgments. |
 | **What's working ✅** | The positive findings already stated in Analysis. Each bullet a real finding (e.g. "new ad drove 10 conversions at $21.49"), not a vibe. |
-| **What needs attention 🔴 / 🟡** | Client-facing critical/decision items only. Use 🔴 only for something actively costing the client (budget cap losing leads, broken tracking) or a decision that cannot wait. An **our-side visibility gap** — e.g. "we can't yet confirm booked jobs" — is 🟡 (watch), not 🔴: a caution, not a crisis. Our-side fixes do NOT go here at all. **When a 🟡 item is really an arrangement, not a problem, frame it as the arrangement.** Write the shared plan and the client's low-effort role in it ("we'll rely on you to flag it if lead quality dips"), not our deficiency ("we still cannot tie leads to jobs"). Same fact, calmer read. Drop the alarm-style bold headline when the item is a heads-up rather than a crisis. |
-| **What we need from you 👉** | The **client-tagged** Action items (owner tagged inline in the MAA's single Action list). Keep the ask plus the one-line why. **Carry only genuine asks — do not pad.** One real ask is correct and beats three padded ones. A resolved former ask drops off; it does not get reworded to fill the section. |
+| **What needs attention 🔴 / 🟡** | Client-facing critical/decision items only. Use 🔴 only for something actively costing the client (budget cap losing leads, broken tracking) or a decision that cannot wait. An **our-side visibility gap**, e.g. "we can't yet confirm booked jobs", is 🟡 (watch), not 🔴: a caution, not a crisis. Our-side fixes do NOT go here at all. **When a 🟡 item is really an arrangement, not a problem, frame it as the arrangement.** Write the shared plan and the client's low-effort role in it ("we'll rely on you to flag it if lead quality dips"), not our deficiency ("we still cannot tie leads to jobs"). Same fact, calmer read. Drop the alarm-style bold headline when the item is a heads-up rather than a crisis. |
+| **What we need from you 👉** | The **client-tagged** Action items (owner tagged inline in the MAA's single Action list). Keep the ask plus the one-line why. **Carry only genuine asks, do not pad.** One real ask is correct and beats three padded ones. A resolved former ask drops off; it does not get reworded to fill the section. |
 | **What we did this week** | The **agency-tagged** Action items (staged dispatches, launches, negatives), phrased as done/in-progress, no action needed. |
-| **Full analysis** | The canonical MAA, reproduced **verbatim and in skill bullet format** (see Step 4). |
+| **Full analysis** | The MAA **rewritten in client language** per the ledger's render spec, metrics in skill bullet format (see Step 4 and "Rewriting the Full analysis"). Derived only; no new findings. |
 
 Severity routing test for each finding: *Is there a decision only the client can
 make, and is something actively costing them or blocked until they act?* goes to
@@ -152,9 +167,16 @@ handle or stage it?* goes to "what we did". *Is it a positive result?* goes to
 **inline owner tag** in the MAA's single Action list, not off per-person section
 headers.
 
+**Action handling.** Carry only Actions with a client-visible outcome. Drop
+internal-only items (file maintenance, script dry-runs, ledger updates, API
+caveats). After removing internal-only items, **re-check every "See Action N"
+cross-reference** in the surviving text: the numbering has shifted, so each
+reference must point at the renumbered item or be rewritten in words. A dangling
+"See Action 4" that now points at a different action is a trace failure.
+
 **"Render" means this skill.** When the user says "render," "render the report,"
-or "render the client view" for a Google Ads MAA — even mid-conversation,
-outside a full MAA run — produce these two outputs from the templates. Never
+or "render the client view" for a Google Ads MAA, even mid-conversation,
+outside a full MAA run, produce these two outputs from the templates. Never
 satisfy a render request with an ad-hoc visualization/widget or a hand-built
 HTML mockup; that is not the deliverable and breaks the established pattern.
 
@@ -164,8 +186,38 @@ HTML mockup; that is not the deliverable and breaks the established pattern.
 
 Use `references/markdown-template.md` as the structural pattern. Embed the charts
 as markdown images pointing at the two PNGs (same folder). Keep the section order
-from Step 3. The Full analysis section reproduces the MAA verbatim, metrics in
-bullet format.
+from Step 3. The Full analysis section is the client-language rewrite of the MAA
+(rules below), metrics in bullet format.
+
+### Rewriting the Full analysis (client language)
+
+The rewrite is still projection, not new analysis: every sentence traces to an
+MAA line, and the Cardinal Rule applies in full. What changes is the register and
+what gets carried. Follow the client ledger's render spec (section 8); where it
+is silent, apply this default strip list:
+
+- Quality Score component names (Expected CTR, Ad Relevance, Landing Page
+  Experience) and per-keyword QS tables
+- Ad group names, ad IDs, file paths, API resource names
+- Cross-client references
+- Method debates and self-corrections ("first we thought X, then Y")
+- Daily spend tables
+- Auction-insight blocks
+- Budget-verification mechanics
+- API caveats and data-pull notes
+- Script names and dry-run mechanics
+- Internal file-maintenance items (ledger, trend.csv, config updates)
+- Owner tags in the top-level sections (the routing already happened in
+  "what we need from you" vs "what we did")
+
+Plain labels, not abbreviations: write **Cost per click** (not CPC), **Cost per
+lead** (not CPA), **Click-through rate** (not CTR), **Impression share** spelled
+out. Campaign-level metric bullets stay: Cost, Impressions, Clicks,
+Click-through rate, Cost per click, Leads, Cost per lead.
+
+Carry only Actions with a client-visible outcome (a change the client will
+notice in the account, the ads, the leads, or the bill). If a finding survives
+the strip list but reads as agency-internal, it goes too.
 
 ### 4b. Paste-ready HTML version (Basecamp-tuned)
 
@@ -182,22 +234,46 @@ restrictive rich-text editor keeps on paste:
   `[CHART] Drag in: {filename}.png`, and tell the user to drag the two PNGs there.
 - **Emoji legend:** ✅ working, 🔴 needs attention/decision, 👉 what we need from
   you, 📊 charts, 🟢/🟡/🔴 status dot.
-- **Metrics stay in bullet format** in the Full analysis section — the core
-  bullets per Search/PMax campaign (Cost, Impressions, Clicks, CTR, CPC,
-  Conversions, CPA). Do not flatten metrics into a paragraph.
+- **Metrics stay in bullet format** in the Full analysis section, the core
+  bullets per Search/PMax campaign (Cost, Impressions, Clicks, Click-through
+  rate, Cost per click, Leads, Cost per lead), plain labels per the rewrite
+  rules. Do not flatten metrics into a paragraph.
 - Include a short **how-to banner** at the top of the HTML file (outside the paste
   body) telling the user: select the report body, copy, paste into the comms tool,
   then drag the two PNGs into the `[CHART]` spots.
 
 > **Adapting beyond Basecamp:** these constraints are Basecamp's, and they are a
 > safe subset for most rich-text editors (email, Notion, Google Docs paste, help
-> desks). If your tool accepts richer markup, you can relax them — but the
+> desks). If your tool accepts richer markup, you can relax them, but the
 > emoji-over-color and dragged-in-PNG approach is the most portable default.
 
 **Style:** no em dashes anywhere in either output. Use commas, periods, or
 hyphens. Match the client's existing MAA voice.
 
-## Step 5: Output
+## Step 5: Trace check (REQUIRED, before writing any file)
+
+Before the .md or .html is written, build a scratch table (not shipped) with one
+row per sentence in **the bottom line**, **what's working**, **what needs
+attention**, and **what we need from you**:
+
+| Client-view sentence | MAA line it derives from (quoted) | Hedge preserved? |
+|---|---|---|
+
+Rules:
+
+1. Every sentence must quote the MAA line it derives from. Paraphrase is fine
+   in the left column; the right column is a **quote**.
+2. A sentence with no source line is **deleted**, not softened and not
+   "supported later."
+3. Flag any hedge that was upgraded to confidence (MAA says "early", "one
+   week", "cannot yet confirm"; the sentence says it as fact). Restore the hedge
+   or delete the sentence.
+
+This step is not optional and not a re-read at the end. On a live render it
+caught **six invented claims** in a summary that read as perfectly plausible.
+Do it before the files exist so nothing has to be unwritten.
+
+## Step 6: Output
 
 Write to `{OUTPUT_DIR}/{Client Name}/`:
 
@@ -212,26 +288,55 @@ overwrite). Present all four files when done. Do **not** touch the source MAA.
 This is a **draft for review before posting**, same as the MAA itself. Never
 auto-publish to the client comms tool.
 
-## Step 6: Verify before presenting (required)
+## Step 7: Verify before presenting (required)
 
-Run the trace-check:
+Re-run the trace-check from Step 5 against the written files, then confirm:
 
-1. **Every** summary line maps to a line in the source MAA. List any that do not —
+1. **Every** summary line maps to a line in the source MAA. List any that do not,
    they must be removed, not "supported later."
 2. No invented metrics; no hedge upgraded to confidence; no chart editorializing.
 3. The chart endpoints equal the MAA's bottom-line numbers.
-4. Metrics in Full analysis are in bullet format, all core bullets per campaign.
-5. The HTML paste body contains no `<svg>`, `<table>`, or color-dependent meaning.
-6. No em dashes in either output.
+4. Metrics in Full analysis are in bullet format, all core bullets per campaign,
+   plain labels (Cost per click, Cost per lead).
+5. The Full analysis carries nothing on the strip list (ledger render spec, or
+   the defaults in Step 4a), and every "See Action N" reference points at the
+   renumbered item.
+6. Size check: client view is about one third of the MAA length, and never
+   over half.
+7. The HTML paste body contains no `<svg>`, `<table>`, or color-dependent meaning.
+8. No em dashes in either output.
 
 If any check fails, fix and re-verify. For high-stakes clients, run the
 trace-check as a fresh read of the MAA against the summary (a subagent is ideal).
 
 ## Connected
 
-- `google-ads-analyzer` — produces the MAA this stage renders.
-- `../../shared/frameworks/methodology.md` — the MAA doctrine (MAA = analysis,
+- `google-ads-analyzer`, produces the MAA this stage renders.
+- `../../shared/frameworks/methodology.md`, the MAA doctrine (MAA = analysis,
   not a task list).
-- `references/markdown-template.md`, `references/basecamp-template.html` — output
+- `references/markdown-template.md`, `references/basecamp-template.html`, output
   patterns.
-- `scripts/render_charts.py` — deterministic chart generator.
+- `scripts/render_charts.py`, deterministic chart generator.
+- `../../shared/frameworks/ledger-template.md`, section 8 is the per-client
+  render spec this skill reads first.
+
+## Changed in 1.5.0
+
+- Full analysis is now rewritten in client language per the ledger's render
+  spec (section 8), with a default strip list and plain metric labels. It was
+  previously reproduced verbatim.
+- Size check added: about one third of the MAA length, never over half.
+- Trace check is now a required Step 5 that runs before any file is written,
+  with a scratch table quoting the MAA source line per sentence.
+- Ledger render spec read added to Step 1; ledger overrides skill defaults.
+- Action handling: internal-only items dropped, "See Action N" references
+  re-checked after renumbering.
+
+## Agent identification (1.5.0)
+
+Both outputs open with the identification line and close with the receipt line
+from `../../shared/frameworks/agent-receipt.md`: first line
+`Automated weekly Google Ads MAA by the google-ads-analyzer agent, hardened by google-ads-reviewer, rendered by google-ads-client-view. {Client}, {date}.`
+and last lines `Sent by google-ads-client-view / {operator}'s desk` / `Agent receipt: Basecamp — google-ads-client-view [Claude] · action: drafted · human review: reviewed by {operator} before posting`.
+The operator may move the identification line below the title but may not
+remove either line.

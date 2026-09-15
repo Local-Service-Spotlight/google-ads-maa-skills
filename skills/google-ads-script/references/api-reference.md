@@ -197,9 +197,9 @@ const campaign2 = adGroup.getCampaign();
 
 ## 4. AdsApp.search() vs AdsApp.report()
 
-### search() — For Iterating Entities
+### search(), For Iterating Entities
 - Returns **iterators** (campaign/keyword/ad objects)
-- Lazy evaluation — only fetches what you iterate
+- Lazy evaluation, only fetches what you iterate
 - Best for: Modifying entities, building lists, entity navigation
 - **Most common in scripts**
 
@@ -213,7 +213,7 @@ for (const campaign of campaigns) {
 }
 ```
 
-### report() — For Analytics & Aggregation
+### report(), For Analytics & Aggregation
 - Returns **rows of data** (not objects)
 - Faster for large data pulls; built-in stats
 - Best for: Reporting, metrics, analysis, large exports
@@ -462,7 +462,7 @@ if (timeRemaining < 60000) {
 
 ### Create & Apply Labels
 ```javascript
-// Create label (idempotent — safe to call multiple times)
+// Create label (idempotent, safe to call multiple times)
 AdsApp.createLabel('my-pause-label', 'Label for pausing', '#FF0000');
 
 // Apply to campaign

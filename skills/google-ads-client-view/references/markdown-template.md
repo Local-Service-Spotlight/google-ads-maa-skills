@@ -6,7 +6,7 @@ inline. Project every section from the MAA per the SKILL.md source map. Do not
 invent content the MAA does not contain. No em dashes.
 -->
 
-# {{CLIENT}} — Weekly Google Ads Report
+# {{CLIENT}}, Weekly Google Ads Report
 
 **{{STATUS_DOT}} {{STATUS_LABEL}}** · Week of {{DATE_PRETTY}}
 
@@ -14,7 +14,7 @@ invent content the MAA does not contain. No em dashes.
 
 > {{BOTTOM_LINE_PARAGRAPH}}
 
-## 📊 The trend — last 13 weeks
+## 📊 The trend, last 13 weeks
 
 ![Leads per week]({{LEADS_PNG}})
 
@@ -22,19 +22,19 @@ invent content the MAA does not contain. No em dashes.
 
 ## What's working ✅
 
-{{WORKING_ITEMS — one "- ✅ ..." line per positive finding in Analysis}}
+{{WORKING_ITEMS, one "- ✅ ..." line per positive finding in Analysis}}
 
 ## What needs attention 🔴
 
-{{ATTENTION_ITEMS — client-facing critical/decision items only, "- 🔴 **...**"}}
+{{ATTENTION_ITEMS, client-facing critical/decision items only, "- 🔴 **...**"}}
 
 ## 👉 What we need from you this week
 
-{{CLIENT_ASKS — numbered list, one "**ask** + one-line why" per client-side Action}}
+{{CLIENT_ASKS, numbered list, one "**ask** + one-line why" per client-side Action}}
 
 ## What we did this week (no action needed)
 
-{{WE_DID — one "- ✅ ..." line per our-side Action, phrased as done/in-progress}}
+{{WE_DID, one "- ✅ ..." line per our-side Action, phrased as done/in-progress}}
 
 ---
 
@@ -54,10 +54,10 @@ invent content the MAA does not contain. No em dashes.
 
 <!-- repeat the campaign block for each Search/PMax campaign in the MAA -->
 
-{{ANALYSIS_PARAGRAPHS — verbatim from the MAA, including the CRM check}}
+{{ANALYSIS_PARAGRAPHS, verbatim from the MAA, including the CRM check}}
 
 **Action**
 
-{{ACTION_ITEMS — verbatim from the MAA, numbered}}
+{{ACTION_ITEMS, verbatim from the MAA, numbered}}
 
-**Start here:** {{START_HERE — verbatim from the MAA}}
+**Start here:** {{START_HERE, verbatim from the MAA}}

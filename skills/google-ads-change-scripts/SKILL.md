@@ -2,11 +2,11 @@
 name: google-ads-change-scripts
 description: >
   Generate one-time Google Ads Scripts that implement specific account changes from MAA
-  recommendations — adding negatives, pausing ads/keywords, updating RSA copy, adjusting
+  recommendations, adding negatives, pausing ads/keywords, updating RSA copy, adjusting
   bids, or restructuring ad groups. Every script defaults to dry-run mode. Trigger on
   "implement these changes", "script to add these negatives", "pause these keywords",
   "bulk update my ads", "apply the MAA actions", or any request to turn Google Ads
-  recommendations into a runnable script. This is for one-time change scripts — use
+  recommendations into a runnable script. This is for one-time change scripts, use
   google-ads-script for data pipelines and ongoing automation.
 ---
 
@@ -20,7 +20,7 @@ Scripts IDE, preview, and execute. Every script defaults to dry-run mode so the
 AM sees exactly what will change before anything happens.
 
 The key principle: **the AM approves every change.** These scripts are tools for
-implementing decisions that have already been made by a human — they don't make
+implementing decisions that have already been made by a human, they don't make
 decisions themselves. Dry-run output should be clear enough that a non-technical
 AM can verify the changes are correct.
 
@@ -33,7 +33,7 @@ the campaign or ad group level.
 
 **Input needed:**
 - List of negative keywords to add
-- Match type for each (exact, phrase, or broad — default to exact for precision)
+- Match type for each (exact, phrase, or broad, default to exact for precision)
 - Target level: campaign negative keyword list, specific campaign, or ad group
 - Campaign/ad group names if targeting specific entities
 
@@ -55,7 +55,7 @@ Takes specific ad identifiers or criteria and pauses them.
 
 **Script behavior:**
 - Log each ad being paused with its current metrics for the record
-- Never delete — always pause. Deletion is irreversible.
+- Never delete, always pause. Deletion is irreversible.
 - In dry-run mode: show each ad that would be paused with its performance stats
 
 ### 3. Update RSA Headlines/Descriptions
@@ -71,7 +71,7 @@ Takes specific headline/description changes and applies them via the
 - Any pin changes
 
 **Script behavior:**
-- RSA modifications use the mutate API — this is the only reliable way to
+- RSA modifications use the mutate API, this is the only reliable way to
   edit RSA assets in Google Ads Scripts
 - Log the before and after state of each ad
 - In dry-run mode: show what the RSA would look like after the change
@@ -128,7 +128,7 @@ This is for implementing "tighter ad group theming" recommendations.
 **Script behavior:**
 - Create destination ad group if needed
 - Add keywords to new ad group
-- Pause keywords in source ad group (don't delete — keeps history)
+- Pause keywords in source ad group (don't delete, keeps history)
 - Copy ads if requested
 - In dry-run mode: show the proposed restructure as a before/after table
 
@@ -148,7 +148,7 @@ google-ads-script skill's conventions:
 // ============================================================================
 const CONFIG = {
   // What this script changes
-  DRY_RUN: true,  // ALWAYS true by default — preview before executing
+  DRY_RUN: true,  // ALWAYS true by default, preview before executing
 
   // Error handling
   SEND_EMAIL_ON_ERROR: true,
@@ -161,7 +161,7 @@ const CONFIG = {
 // ============================================================================
 // CHANGE DEFINITIONS
 // ============================================================================
-// The specific changes to make — this is what the AM reviews before running.
+// The specific changes to make, this is what the AM reviews before running.
 // Structured as arrays/objects so the AM can add, remove, or modify entries.
 
 // ============================================================================
@@ -182,7 +182,7 @@ function main() {
     // Summary
     Logger.log('=== CHANGE SUMMARY ===');
     if (CONFIG.DRY_RUN) {
-      Logger.log('DRY RUN — no changes were made.');
+      Logger.log('DRY RUN, no changes were made.');
       Logger.log('Review the log above. If everything looks correct,');
       Logger.log('set DRY_RUN to false and run again.');
     }
@@ -217,8 +217,8 @@ const NEGATIVES_TO_ADD = [
 **Example for pausing ads:**
 ```javascript
 const ADS_TO_PAUSE = [
-  {campaign: 'SF-Search-Dumpster', adGroup: 'Dumpster Rental', reason: 'CTR 1.2% vs 3.8% on other ad — dragging group average'},
-  {campaign: 'SF-Search-Dumpster', adGroup: 'Roll Off Container', reason: 'Ad strength Poor — needs rewrite before re-enabling'},
+  {campaign: 'SF-Search-Dumpster', adGroup: 'Dumpster Rental', reason: 'CTR 1.2% vs 3.8% on other ad, dragging group average'},
+  {campaign: 'SF-Search-Dumpster', adGroup: 'Roll Off Container', reason: 'Ad strength Poor, needs rewrite before re-enabling'},
 ];
 ```
 
@@ -250,9 +250,45 @@ item that drives each change. This creates an audit trail:
 
 ```javascript
 // From MAA dated 2026-04-03, Action Item #1:
-// "Add these 12 negative keywords — $640/month in waste on job-seeker queries"
+// "Add these 12 negative keywords, $640/month in waste on job-seeker queries"
 const NEGATIVES_TO_ADD = [ ... ];
 ```
+
+## After the Run: Write the Ledger Row (1.5.0)
+
+`change_event` on the Google Ads API is unreliable on the MCP path (validation
+errors, empty results for recent changes, page caps). The client ledger's
+change log is the authoritative record of what changed and when, and it only
+fills if someone writes to it. This skill is the main place changes originate,
+so it owns the write.
+
+Every script this skill produces ends with a **Ledger row** block in its
+header comment, pre-filled with everything known at authoring time:
+
+```javascript
+// LEDGER ROW (append to compiled/ledger.md section 4 when this runs live):
+// | {YYYY-MM-DD} | Negatives Round 18: 19 campaign-level phrase negatives on Dallas Dumpster Rentals ({term list} tail) | {who} | scripts/{filename}.js, MAA {date} Action 2 |
+// QUARANTINE (section 7): exits {date + 14 days}. Spend redistribution on the affected terms is expected, not a result.
+// WATCH (section 5): none | {item to watch and its promote condition}
+```
+
+When the operator confirms a live run ("ran it", "script is live", "done"),
+the response is the ledger write, not an acknowledgement:
+
+1. Fill the date and who, append the row to section 4 of the ledger.
+2. Append the quarantine entry to section 7 with its exit date.
+3. If the script pauses or enables anything, update section 2 (definitions) or
+   section 5 (watch list) as the header block says.
+4. Verify the change by reading the account back (the MCP is fine for this),
+   and note "API-verified" or "unverified" in the row. A script log is never
+   evidence of account state; the IDE Preview button discards changes while
+   reporting success, and `setFinalUrl()` fails silently on RSAs.
+5. Reply with the rows you wrote, nothing else.
+
+**UI edits.** Changes made by hand in the Google Ads UI bypass this skill.
+The trigger "log a change: {what}, {campaign}, {date}" appends the same row
+shape to the ledger without a script. The analyzer should prompt for this
+whenever a pull shows a state the ledger does not explain.
 
 ## What This Skill Does NOT Do
 

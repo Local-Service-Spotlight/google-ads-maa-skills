@@ -11,7 +11,7 @@ Coaching mode activates when the user:
 
 ## Evaluating a User-Written MAA
 
-When reviewing a user's MAA, evaluate across these dimensions. Be specific —
+When reviewing a user's MAA, evaluate across these dimensions. Be specific,
 "the analysis needs work" teaches nothing. "The analysis identifies the CPA drop
 but doesn't check what happened to lead volume" teaches a transferable principle.
 
@@ -52,7 +52,7 @@ but doesn't check what happened to lead volume" teaches a transferable principle
   the account average of 4.3%" is actionable
 - **Priority-appropriate**: Are the actions sequenced by impact? Recommending
   audience layering when conversion tracking is broken is putting optimization
-  before fundamentals — always fix what's broken before improving what works
+  before fundamentals, always fix what's broken before improving what works
 - **Sequenced**: Is there a clear "do this first" recommendation?
 
 ## Teaching the MAA Process
@@ -65,7 +65,7 @@ actual data if available. The progression:
    abstract methodology.
 
 2. **Model the paired-metric habit**: Show them how to always pull up the
-   counterpart metric. Make it a reflex. "You mentioned CPA dropped — great.
+   counterpart metric. Make it a reflex. "You mentioned CPA dropped, great.
    What happened to conversion volume in the same period?"
 
 3. **Teach Top-N discipline**: Have them sort by spend and look at the top 5
@@ -109,7 +109,7 @@ consecutive days, revert. If CPA is below $40 with 30+ conversions/week after
 14 days, roll out to remaining campaigns."
 
 **Documentation**: Record what you tested, what happened, and what you learned.
-Even failed experiments have value — they narrow the solution space.
+Even failed experiments have value, they narrow the solution space.
 
 ### Common Experiments for Local Service Accounts
 
@@ -124,10 +124,10 @@ Even failed experiments have value — they narrow the solution space.
 
 ### Daily Quick Check (5-10 min)
 
-- Spend pacing vs. daily budget — any campaigns limited by budget?
+- Spend pacing vs. daily budget, any campaigns limited by budget?
 - Any anomalies in cost, conversions, or CPA vs. trailing 7-day average?
 - Any new disapproved ads or policy flags?
-- Quick scan of search terms from yesterday — anything obviously irrelevant?
+- Quick scan of search terms from yesterday, anything obviously irrelevant?
 
 ### Weekly Analysis (20-30 min)
 

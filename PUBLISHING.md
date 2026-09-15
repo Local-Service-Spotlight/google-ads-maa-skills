@@ -4,7 +4,7 @@ Goal: put this folder on GitHub as a **public** repo named
 `google-ads-maa-skills` so others can install it. (Public is required for the
 one-line plugin install to work.)
 
-## Recommended: GitHub CLI — one-time setup, then one command
+## Recommended: GitHub CLI, one-time setup, then one command
 
 1. Install GitHub CLI: <https://cli.github.com> (on a Mac: `brew install gh`).
 2. Sign in: `gh auth login` (choose GitHub.com → HTTPS → log in with a browser).

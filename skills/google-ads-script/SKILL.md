@@ -3,11 +3,11 @@ name: google-ads-script
 description: >
   Generate production-ready Google Ads Scripts (JavaScript) for automating campaign
   management, data pipelines, monitoring, and reporting. Trigger whenever someone asks to
-  write, build, create, or fix a Google Ads script — including BigQuery sync, Quality Score
+  write, build, create, or fix a Google Ads script, including BigQuery sync, Quality Score
   tracking, search term mining, conversion health checks, bid/budget automation, alerts, or
   Sheet exports. Also trigger on "Google Ads script for [task]", "automate my Google Ads",
   "write a script that [does X]", "ads script to BigQuery", "budget pacing script", "MCC
-  script", or any JavaScript automation within Google Ads. Generates actual script code —
+  script", or any JavaScript automation within Google Ads. Generates actual script code,
   does NOT analyze performance data (use google-ads-analyzer for MAA reports/audits).
   "Analyze" or "audit" = analyzer skill. "Write a script" or "automate" = this skill.
 ---
@@ -28,14 +28,14 @@ The skill covers two categories of work:
 
 - **Pattern-based scripts**: Common use cases with well-established approaches (BigQuery
   sync, Quality Score tracking, search term mining, conversion health checks, budget pacing,
-  etc.). For these, read the matching reference file before generating code — they contain
+  etc.). For these, read the matching reference file before generating code, they contain
   tested patterns and important gotchas.
 - **Custom scripts**: One-off automation requests that don't match a known pattern. Use the
   core API reference and code patterns to build these from scratch.
 
 ## Before Writing Any Script
 
-1. **Clarify the requirements.** Scripts are specific — a vague ask produces a useless
+1. **Clarify the requirements.** Scripts are specific, a vague ask produces a useless
    script. Understand at minimum: what data or entities the script touches, what action it
    takes (read, write, alert, export), and where the output goes (Sheets, BigQuery, email,
    back into the account).
@@ -46,17 +46,17 @@ The skill covers two categories of work:
 
 3. **Read the relevant reference file.** If the request matches a known pattern, read the
    corresponding file in `references/` before writing code. These patterns encode lessons
-   learned — quota workarounds, date handling edge cases, schema decisions that prevent
+   learned, quota workarounds, date handling edge cases, schema decisions that prevent
    headaches later.
 
 ## Script Structure Convention
 
-Every script follows this four-section layout. This is non-negotiable — it makes scripts
+Every script follows this four-section layout. This is non-negotiable, it makes scripts
 readable, maintainable, and reusable across accounts.
 
 ```javascript
 // ============================================================================
-// CONFIGURATION — Edit this section to customize the script
+// CONFIGURATION, Edit this section to customize the script
 // ============================================================================
 const CONFIG = {
   // All user-editable settings go here
@@ -64,12 +64,12 @@ const CONFIG = {
 };
 
 // ============================================================================
-// UTILITIES — Reusable helper functions
+// UTILITIES, Reusable helper functions
 // ============================================================================
 // Date formatting, error logging, email sending, sheet helpers
 
 // ============================================================================
-// MAIN LOGIC — The core work of the script
+// MAIN LOGIC, The core work of the script
 // ============================================================================
 // Data collection, processing, output writing
 
@@ -89,29 +89,29 @@ function main() {
 ### CONFIG Block Rules
 
 The CONFIG block is the only section a non-technical user should need to touch. Every
-configurable value belongs here — no magic numbers buried in logic functions.
+configurable value belongs here, no magic numbers buried in logic functions.
 
 Required CONFIG fields for every script:
-- `SEND_EMAIL_ON_ERROR: true` and `ERROR_EMAIL: 'user@email.com'` — every script should
+- `SEND_EMAIL_ON_ERROR: true` and `ERROR_EMAIL: 'user@email.com'`, every script should
   be able to alert on failure
-- `TIME_ZONE: 'America/Denver'` — default to Mountain Time (user's timezone), always use
+- `TIME_ZONE: 'America/Denver'`, default to Mountain Time (user's timezone), always use
   for date formatting
-- `DRY_RUN: true` — for scripts that modify the account, include a dry-run mode that logs
+- `DRY_RUN: true`, for scripts that modify the account, include a dry-run mode that logs
   what would change without actually changing it
 
 Common CONFIG fields by script type:
 - **Sheet output**: `SPREADSHEET_URL`, `SHEET_NAME`
 - **BigQuery output**: `BQ_PROJECT_ID`, `BQ_DATASET_ID`, `BQ_TABLE_ID`
-- **Thresholds**: named descriptively — `MIN_CLICKS_FOR_EVALUATION`, `MAX_CPA_THRESHOLD`
+- **Thresholds**: named descriptively, `MIN_CLICKS_FOR_EVALUATION`, `MAX_CPA_THRESHOLD`
 - **Date ranges**: `DATE_RANGE` using Google's predefined constants or custom ranges
 - **MCC scripts**: `ACCOUNT_LABEL` to filter which managed accounts to process
 
 ### Naming Conventions
 
-- Variables: `lowerCamelCase` — `campaignName`, `totalCost`
-- Constants: `ALL_CAPS` — `MAX_CPC`, `SHEET_NAME`
-- Functions: `lowerCamelCase` — `getCampaignStats()`, `writeToSheet()`
-- CONFIG keys: `ALL_CAPS` — `BQ_PROJECT_ID`, `DATE_RANGE`
+- Variables: `lowerCamelCase`, `campaignName`, `totalCost`
+- Constants: `ALL_CAPS`, `MAX_CPC`, `SHEET_NAME`
+- Functions: `lowerCamelCase`, `getCampaignStats()`, `writeToSheet()`
+- CONFIG keys: `ALL_CAPS`, `BQ_PROJECT_ID`, `DATE_RANGE`
 
 ### Error Handling
 
@@ -166,7 +166,7 @@ If the user's request doesn't match a known pattern, use `references/api-referen
 
 ## Reporting: AdsApp.search() vs AdsApp.report()
 
-Both accept GAQL queries. Prefer `AdsApp.search()` for new scripts — it returns structured
+Both accept GAQL queries. Prefer `AdsApp.search()` for new scripts, it returns structured
 `GoogleAdsRow` objects with dot-notation access (`row.campaign.name`,
 `row.metrics.clicks`), which is cleaner for programmatic processing.
 
@@ -235,7 +235,7 @@ function processAccount() {
 }
 
 function afterAllAccounts(results) {
-  // Consolidation callback — runs after all accounts finish
+  // Consolidation callback, runs after all accounts finish
   for (const result of results) {
     if (result.getStatus() === 'OK') {
       const data = JSON.parse(result.getReturnValue());
@@ -254,10 +254,10 @@ multiple script instances.
 Scripts can write directly to BigQuery via the Advanced API (enabled in script editor under
 Advanced APIs → BigQuery). Key objects:
 
-- `BigQuery.Datasets.insert()` — create datasets
-- `BigQuery.Tables.insert()` — create tables with schemas
-- `BigQuery.Tabledata.insertAll()` — insert rows
-- `BigQuery.Jobs.query()` — run SQL queries
+- `BigQuery.Datasets.insert()`, create datasets
+- `BigQuery.Tables.insert()`, create tables with schemas
+- `BigQuery.Tabledata.insertAll()`, insert rows
+- `BigQuery.Jobs.query()`, run SQL queries
 
 See `references/bigquery-sync.md` for the full pattern including schema definition, row
 insertion, and error handling.
@@ -284,7 +284,7 @@ by label/date to stay within bounds.
    Google Ads Scripts IDE
 2. **Add a brief setup guide** after the code: what CONFIG values need to be changed, what
    Advanced APIs need to be enabled (if any), and the recommended scheduling frequency
-3. **Note any prerequisites** — like enabling BigQuery Advanced API, creating a destination
+3. **Note any prerequisites**, like enabling BigQuery Advanced API, creating a destination
    Sheet, or having specific labels already set up in the account
 4. If the script modifies the account (bids, status changes, budgets), **default DRY_RUN to
    true** and tell the user to run in preview mode first, review the logs, then flip

@@ -48,10 +48,10 @@ WHERE campaign.status = "ENABLED"
 ### Key Notes
 
 **Quality Score Fields:**
-- `quality_info.quality_score` — Returns integer 1–10. This is the overall Quality Score.
-- `quality_info.creative_quality_score` — Ad Relevance component. Returns "ABOVE_AVERAGE" | "AVERAGE" | "BELOW_AVERAGE".
-- `quality_info.search_predicted_ctr` — Expected CTR component. Returns "ABOVE_AVERAGE" | "AVERAGE" | "BELOW_AVERAGE".
-- `quality_info.post_click_quality_score` — Landing Page Experience component. Returns "ABOVE_AVERAGE" | "AVERAGE" | "BELOW_AVERAGE".
+- `quality_info.quality_score`, Returns integer 1–10. This is the overall Quality Score.
+- `quality_info.creative_quality_score`, Ad Relevance component. Returns "ABOVE_AVERAGE" | "AVERAGE" | "BELOW_AVERAGE".
+- `quality_info.search_predicted_ctr`, Expected CTR component. Returns "ABOVE_AVERAGE" | "AVERAGE" | "BELOW_AVERAGE".
+- `quality_info.post_click_quality_score`, Landing Page Experience component. Returns "ABOVE_AVERAGE" | "AVERAGE" | "BELOW_AVERAGE".
 
 **Missing Data:**
 - Some keywords won't have a QS (returns null or 0). This typically happens for keywords with very low impression volume or brand-new keywords that haven't accumulated enough data.
@@ -74,10 +74,10 @@ Date | Campaign | Ad Group | Keyword | Match Type | QS | Expected CTR | Ad Relev
 
 ### Data Structure
 
-- **One row per keyword per day** — If an account has 500 keywords, each daily run adds 500 rows.
-- **New rows appended, never overwritten** — This is critical. Each run should append to the sheet, not replace. You're building a time-series history.
-- **Null handling** — If a keyword has no QS data, record it as blank or "N/A" so you know it was tracked that day but had insufficient data.
-- **Cost column** — Store in micros (cost_micros from the API). Convert to dollars when displaying: `cost_micros / 1_000_000`.
+- **One row per keyword per day**, If an account has 500 keywords, each daily run adds 500 rows.
+- **New rows appended, never overwritten**, This is critical. Each run should append to the sheet, not replace. You're building a time-series history.
+- **Null handling**, If a keyword has no QS data, record it as blank or "N/A" so you know it was tracked that day but had insufficient data.
+- **Cost column**, Store in micros (cost_micros from the API). Convert to dollars when displaying: `cost_micros / 1_000_000`.
 
 ### Sheet Organization Example
 
@@ -193,7 +193,7 @@ If you only care about certain campaigns:
 AND campaign.name IN ("Plumbing SEM", "HVAC Branded")
 ```
 
-**Note on Iterator Limits:** Google Ads API has a 50,000 keyword iterator limit per script run. For most accounts, this isn't a constraint—even large accounts rarely have >10,000 active keywords. But if you're hitting the limit, layer the filters above.
+**Note on Iterator Limits:** Google Ads API has a 50,000 keyword iterator limit per script run. For most accounts, this isn't a constraint, even large accounts rarely have >10,000 active keywords. But if you're hitting the limit, layer the filters above.
 
 ---
 
@@ -287,16 +287,16 @@ If your summary sheet shows an increasing number of "Below Average" keywords, it
 
 When building the actual script:
 
-1. **API Call** — Execute the GAQL query using `AdsManagerScriptObjects`.
-2. **Data Transformation** — Map API response fields to your output schema (Sheet or BigQuery).
-3. **Deduplication** (if rerunning) — Check if today's date already exists in the Sheet/table. If it does, delete yesterday's entries and reinsert to handle late-arriving data.
-4. **Append Logic** — For Sheet, use `appendRow()` or batch `insertRows()`. For BigQuery, use streaming inserts.
-5. **Error Handling** — Log any keywords with null QS. Email alerts if the query returns 0 rows (indicating a quota issue or account problem).
+1. **API Call**, Execute the GAQL query using `AdsManagerScriptObjects`.
+2. **Data Transformation**, Map API response fields to your output schema (Sheet or BigQuery).
+3. **Deduplication** (if rerunning), Check if today's date already exists in the Sheet/table. If it does, delete yesterday's entries and reinsert to handle late-arriving data.
+4. **Append Logic**, For Sheet, use `appendRow()` or batch `insertRows()`. For BigQuery, use streaming inserts.
+5. **Error Handling**, Log any keywords with null QS. Email alerts if the query returns 0 rows (indicating a quota issue or account problem).
 
 ---
 
 ## Related Patterns
 
-- **Landing Page Experience Audit** — Deep dive into which landing pages are causing QS to drop.
-- **Keyword Bid Optimization** — Use QS trends to identify keywords worth increasing bids on (high QS + low spend = opportunity).
-- **Ad Copy A/B Testing** — Track whether ad copy changes move Ad Relevance scores.
+- **Landing Page Experience Audit**, Deep dive into which landing pages are causing QS to drop.
+- **Keyword Bid Optimization**, Use QS trends to identify keywords worth increasing bids on (high QS + low spend = opportunity).
+- **Ad Copy A/B Testing**, Track whether ad copy changes move Ad Relevance scores.
