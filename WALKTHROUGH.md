@@ -34,10 +34,12 @@ Ask: *"Pull the 7-day campaign summary for {client} via the Google Ads MCP."*
 The queries live in `shared/frameworks/gaql-query-pack.md`. Confirm the numbers
 match the Google Ads UI. That's setup done, no script, no Gmail label.
 
-**Known limitation:** some Google Ads MCP setups require reauthorization as
-often as daily. If the `search` tool is missing at the start of a run,
-reauthorize the connector, or let the run fall back to the email path (keep
-Path B wired as a backup if you schedule hands-off runs).
+**If the `search` tool is missing at the start of a run**, or a query fails
+and Cowork offers no Reconnect button, the server has lost its tokens. Remove
+and re-add the connector to get going, then make sure the deployment uses the
+Firestore token store (`mcp-setup-guide.md`, Option 2); that was the cause of
+every "daily reauth" we logged from July to September 2026. Keep Path B wired
+as a backup for scheduled runs regardless.
 
 ---
 
@@ -180,17 +182,19 @@ The analyzer auto-detects what you provided and tells you what is missing. Steps
   accounts, and the error text does not say so. Fix: request **Basic access**
   in your MCC's API Center (manual approval, 1–3 business days). See "Before
   you start" in `shared/frameworks/mcp-setup-guide.md`.
-- **MCP `search` tool missing / unauthorized.** Some Google Ads MCP setups
-  require frequent (even daily) reauthorization. Reauthorize the connector and
-  retry, or let the run fall back to the email path. If you schedule hands-off
-  runs, keep Path B wired as the backup until your connection persists.
-  How to tell **lapsed authorization** from **misconfiguration**: lapsed auth
-  worked before and now the tools are simply absent or prompt for OAuth again,
-  reauthorizing fixes it in one click. Misconfiguration never worked in the
-  first place, or fails with explicit credential/permission errors after
-  authorizing, recheck the env vars and the OAuth app's publishing status
-  (a "Testing"-status app expires refresh tokens after 7 days, which
-  masquerades as constant lapses).
+- **MCP `search` tool missing / unauthorized / "failed query" with no
+  Reconnect button.** The server forgot the token, not the client. Remove and
+  re-add the connector and retry, or let the run fall back to the email path.
+  If it happens after every Cloud Run restart, the deployment lacks the
+  Firestore token store; fix per `mcp-setup-guide.md`, Option 2, and prove it
+  with the forced-restart test there. Closed on our own deployment 2026-09-29.
+  How to tell **lost tokens** from **misconfiguration**: lost tokens worked
+  before and now the tools are simply absent or the query fails with no
+  Reconnect offered; removing and re-adding the connector fixes it at once.
+  Misconfiguration never worked in the first place, or fails with explicit
+  credential or permission errors after authorizing; recheck the env vars and
+  the OAuth app's publishing status (a "Testing"-status app expires refresh
+  tokens after 7 days and asks for a fresh Google sign-in weekly).
 - **Analyzer can't find the data (email path).** Confirm the feed email arrived
   and carries the `maa-data-automation` label (Step 3). Check the subject starts
   with `[MAA Data]`.

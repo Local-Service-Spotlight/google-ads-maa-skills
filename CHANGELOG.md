@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.5.1, 2026-09-29 (docs only)
+
+- `shared/frameworks/mcp-setup-guide.md`: Cloud Run sequence rewritten around
+  the production deployment: Firestore token store, JWT signing key and
+  storage encryption key, secrets in Secret Manager, `--min-instances 1`,
+  two upstream build traps (fastmcp version assert in the Dockerfile, Artifact
+  Registry repo name), and a forced-restart acceptance test. The
+  "reauthorization" limitation is closed with its real cause: the in-memory
+  token store, wiped on every instance restart.
+- README roadmap, ONBOARDING-AGENCY (Phase 0, Phase 1, troubleshooting) and
+  WALKTHROUGH (A3, troubleshooting) updated to match. ONBOARDING gains the
+  team-member path: join an existing server by URL with your own Google
+  sign-in, no build.
+- No skill changes.
+
 ## 1.5.0, 2026-09-06 (analyzer SKILL.md revised 2026-09-15 for the Task Library review)
 
 **2026-09-15, second pass, from the first two executions.** Added

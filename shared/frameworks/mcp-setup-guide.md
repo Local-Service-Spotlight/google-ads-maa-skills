@@ -71,8 +71,9 @@ APIs & Services → OAuth consent screen → Publish app). An app left in
 "Testing" status issues refresh tokens that **expire after 7 days**, which
 presents later as the connection demanding reauthorization every few days.
 Doing this now prevents the problem; doing it later means re-authorizing one
-more time after you flip it. (This is the root cause behind the
-reauthorization limitation at the bottom of this guide.)
+more time after you flip it. (This was once believed to be the root cause of
+the daily reauthorization; the real cause was the in-memory token store. See
+the closed limitation at the bottom of this guide.)
 
 The Google account you authorize with must have access to the accounts you'll
 query, for an agency, that means a user on the MCC.
@@ -125,39 +126,84 @@ variable set (and add the URL's OAuth callback to your Web OAuth client's
 authorized redirect URIs). Skipping the second pass is the classic
 lost-hour here, OAuth appears to start and then fails on redirect.
 
-Concrete sequence (substitute your project, region, and values):
+Concrete sequence (substitute your project, region, and values). This is the
+sequence that has run in production since 2026-09-29; the earlier version of
+this guide skipped the persistent token store and the secrets, which is why
+the connection used to drop on every instance restart.
 
 ```
 # one-time: build infra
 gcloud config set project YOUR_PROJECT_ID
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com \
-  artifactregistry.googleapis.com
-gcloud artifacts repositories create google-ads-mcp \
+  artifactregistry.googleapis.com firestore.googleapis.com \
+  secretmanager.googleapis.com
+gcloud artifacts repositories create mcp-servers \
   --repository-format=docker --location=us-central1
 
-# build the image from the google-ads-mcp source checkout
+# one-time: the token store. Without it, tokens live in memory and every
+# restart forces a reconnect.
+gcloud firestore databases create --location=us-central1 --type=firestore-native
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+  --member="serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/datastore.user"
+
+# build the image with the Firestore extra
 git clone https://github.com/googleads/google-ads-mcp.git && cd google-ads-mcp
+sed -i '' 's|uv pip install --system \.$|uv pip install --system ".[firestore]"|' Dockerfile
 gcloud builds submit \
-  --tag us-central1-docker.pkg.dev/YOUR_PROJECT_ID/google-ads-mcp/server
+  --tag us-central1-docker.pkg.dev/YOUR_PROJECT_ID/mcp-servers/google-ads-mcp:firestore .
+
+# secrets: never put these in plain env vars
+printf '%s' 'YOUR_DEV_TOKEN' | gcloud secrets create google-ads-developer-token --data-file=-
+printf '%s' 'YOUR_CLIENT_SECRET' | gcloud secrets create google-ads-oauth-client-secret --data-file=-
+openssl rand -hex 32 | tr -d '\n' | gcloud secrets create google-ads-mcp-jwt-key --data-file=-
+openssl rand -hex 32 | tr -d '\n' | gcloud secrets create google-ads-mcp-storage-key --data-file=-
+for s in google-ads-developer-token google-ads-oauth-client-secret \
+         google-ads-mcp-jwt-key google-ads-mcp-storage-key; do
+  gcloud secrets add-iam-policy-binding $s \
+    --member="serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+    --role="roles/secretmanager.secretAccessor"
+done
 
 # PASS 1, deploy without the base URL
-gcloud run deploy google-ads-mcp \
-  --image us-central1-docker.pkg.dev/YOUR_PROJECT_ID/google-ads-mcp/server \
-  --region us-central1 \
-  --set-env-vars GOOGLE_PROJECT_ID=YOUR_PROJECT_ID,\
-GOOGLE_ADS_DEVELOPER_TOKEN=YOUR_DEV_TOKEN,\
+gcloud run deploy google-ads-mcp-oauth \
+  --image us-central1-docker.pkg.dev/YOUR_PROJECT_ID/mcp-servers/google-ads-mcp:firestore \
+  --region us-central1 --min-instances 1 \
+  --set-env-vars "GOOGLE_PROJECT_ID=YOUR_PROJECT_ID,\
 GOOGLE_ADS_MCP_OAUTH_CLIENT_ID=YOUR_CLIENT_ID,\
-GOOGLE_ADS_MCP_OAUTH_CLIENT_SECRET=YOUR_CLIENT_SECRET,\
-FASTMCP_HOST=0.0.0.0
+GOOGLE_ADS_LOGIN_CUSTOMER_ID=YOUR_MCC_ID,\
+GOOGLE_ADS_MCP_STORAGE_TYPE=firestore,\
+GOOGLE_ADS_MCP_STORAGE_FIRESTORE_PROJECT=YOUR_PROJECT_ID,\
+FASTMCP_HOST=0.0.0.0" \
+  --set-secrets "GOOGLE_ADS_DEVELOPER_TOKEN=google-ads-developer-token:latest,\
+GOOGLE_ADS_MCP_OAUTH_CLIENT_SECRET=google-ads-oauth-client-secret:latest,\
+GOOGLE_ADS_MCP_JWT_SIGNING_KEY=google-ads-mcp-jwt-key:latest,\
+GOOGLE_ADS_MCP_STORAGE_ENCRYPTION_KEY=google-ads-mcp-storage-key:latest"
 
 # read the assigned URL back
-gcloud run services describe google-ads-mcp --region us-central1 \
+gcloud run services describe google-ads-mcp-oauth --region us-central1 \
   --format='value(status.url)'
 
 # PASS 2, update with the base URL set to that value
-gcloud run services update google-ads-mcp --region us-central1 \
+gcloud run services update google-ads-mcp-oauth --region us-central1 \
   --update-env-vars GOOGLE_ADS_MCP_BASE_URL=https://YOUR-ASSIGNED-URL.a.run.app
 ```
+
+Two upstream traps, both hit on 2026-09-29:
+
+- The upstream Dockerfile at HEAD carries a `RUN python -c "... assert
+  version('fastmcp') == '4.0.3' ..."` step for a Codex CLI quirk, while
+  `pyproject.toml` requires fastmcp 4.0.6 or newer. The build cannot pass both.
+  Delete that RUN line and its LABEL; the workaround is not needed for Claude.
+- Push fails with `Repository "..." not found` if the tag path does not match an
+  existing Artifact Registry repository exactly. Check with
+  `gcloud artifacts repositories list --location=us-central1` before building.
+
+Prove persistence before calling it done: run one query, then force a restart
+with `gcloud run services update google-ads-mcp-oauth --region us-central1
+--update-env-vars RESTART_MARK=$(date +%s)`, wait for the new revision, and
+run the same query without touching the connector. If it answers, tokens are
+persisting.
 
 Then add `https://YOUR-ASSIGNED-URL.a.run.app/oauth/callback` (or the callback
 path your server version documents) to the Web OAuth client's authorized
@@ -193,22 +239,32 @@ of guessing.
 
 ---
 
-## Known limitation: reauthorization
+## Known limitation: reauthorization (closed 2026-09-29)
 
-Depending on your OAuth app's publishing status and token handling, the
-connection may require frequent, even daily, reauthorization. In practice
-this is the main blocker to fully hands-off scheduled runs: if the `search`
-tool is missing when a run starts, the authorization has lapsed.
+From July to September 2026 the connection dropped roughly daily and Cowork
+showed no Reconnect button, only "failed query". The cause was not the OAuth
+app's publishing status. The server kept OAuth tokens in memory, so every
+Cloud Run instance restart wiped them; the proxy then answered `invalid_grant`
+and Claude got 401 on `/mcp`. The diagnosis is in the Cloud Run logs:
+`Refresh token not found for client=https://claude.ai/... Rejecting with
+invalid_grant` shortly after an instance start.
 
-Mitigations, in order of preference:
+**Diagnosis rule:** no Reconnect button means the server forgot the token, not
+the client. Remove and re-add the connector to get going today, then fix the
+store.
 
-1. **Publish the OAuth app to production** (an app left in "Testing" status
-   issues refresh tokens that expire after 7 days) and verify refresh-token
-   persistence in your deployment.
-2. **Keep the email pipeline wired as the fallback** (`WALKTHROUGH.md`, Path B)
+**Fix:** the Firestore token store, JWT signing key and storage encryption key
+in the Cloud Run sequence above. With those set, a forced restart is followed
+by a successful query with no reconnect (verified 2026-09-29 on the LSS MCC).
+
+Remaining upkeep:
+
+1. Firestore token entries never auto-expire. Clear old documents from the
+   token collection quarterly.
+2. Rotating `GOOGLE_ADS_MCP_JWT_SIGNING_KEY` invalidates every issued token by
+   design; plan one reconnect after any rotation.
+3. **Keep the email pipeline wired as the fallback** (`WALKTHROUGH.md`, Path B)
    so a scheduled run degrades to the email data instead of stalling.
-3. **Reauthorize before scheduled runs** if neither of the above is in place
-   yet.
 
 ---
 
