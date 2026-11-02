@@ -21,12 +21,11 @@ project. Nothing is shared with the publisher of this repo. You need:
 3. **OAuth client ID/secret** from that project. Authorize with a user on your
    MCC so every child account is reachable.
 
-⚠️ **Two things that look like "the MCP stopped working."** First, publish
-the OAuth app to production; an app left in "Testing" status issues refresh
-tokens that expire after 7 days. Second, and the one that actually caused our
-daily reconnects from July to September 2026: deploy Cloud Run with the
-Firestore token store, or the server forgets every token on restart. Both are
-in `shared/frameworks/mcp-setup-guide.md`, Option 2.
+⚠️ **Publish the OAuth app to production before going live.** An app left in
+"Testing" status issues refresh tokens that expire after 7 days, this is the
+single most common cause of "the MCP stopped working," and it presents as
+daily reauthorization. See the reauthorization section of
+`shared/frameworks/mcp-setup-guide.md`.
 
 ## Phase 1, Stand up the Google Ads MCP
 
@@ -39,13 +38,6 @@ Full detail in `shared/frameworks/mcp-setup-guide.md`. For Cowork specifically:
 - **Alternative: run it locally** via the desktop app's MCP config. Works, but
   the connector is only available while that desktop is online, which rules
   out unattended scheduled runs.
-
-**Joining a server someone else already deployed** (most team members): you
-do not build anything. Get the server's `/mcp` URL from whoever runs it, add
-it in Cowork (Settings → Connectors → Add custom connector), and sign in with
-your own Google account. That account must be a user on the MCC; the server
-only proxies your identity, it grants nothing. Each person's sign-in is
-stored separately, so one person reconnecting never affects another.
 
 Verify (5 min): ask Claude *"What customers do I have access to?"*, you
 should get your MCC's account list back. Then spot-check one campaign summary
@@ -157,8 +149,7 @@ minutes per client per week.
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| MCP tools missing, or "failed query" with no Reconnect button | Server lost its tokens (in-memory store, restarted) | Remove and re-add the connector today; deploy with the Firestore token store so it stops (setup guide, Option 2) |
-| Connector prompts for Google sign-in again after ~7 days | OAuth app still in "Testing" status | Publish the OAuth app to production (Phase 0), reauthorize once |
+| MCP tools missing at session start | OAuth lapsed | Reauthorize; publish OAuth app to production (Phase 0) |
 | "Unrecognized field" GAQL errors | API version drift | Use `get_resource_metadata` for the resource; update `gaql-query-pack.md` |
 | Analyzer asks context questions in chat on a weekly run | No ledger, or the ledger is missing the definition | Add the fact as a ledger line; the next run reads it |
 | Draft recommends pausing something on one week of data | Gates not applied, or the hardener was skipped | Check the Generation notes for the verdict ledger; re-run Stage 2 |

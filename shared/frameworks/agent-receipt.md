@@ -1,7 +1,7 @@
 # Agent receipt convention
 
-Every piece of agent-authored text that lands in Basecamp, email or any
-channel a human reads carries two things: an opening line that says an agent
+Every piece of agent-authored text that lands on an INTERNAL surface (team-only
+Basecamp threads, agent notes, email to the team) carries two things: an opening line that says an agent
 produced it, and a closing receipt line in the house format. A reader should
 never have to infer that a post came from an automation.
 
@@ -53,6 +53,11 @@ Agent receipt: Basecamp — google-ads-daily-check [Claude] · action: reported 
   incomplete.
 - When the operator edits the block before posting, the receipt line stays
   and `human review` reads `reviewed by {name} before posting`.
-- Client-visible posts carry the same two lines. Clients are entitled to know
-  when an agent wrote something.
+- **Audience rule (changed 2026-10-02 in this tree; matches `clients/_shared/agent-receipt.md`
+  of 2026-09-30 and Dennis's direction relayed by Daniel on 2026-10-02):** client- and
+  partner-facing posts (client-visible Basecamp threads, client email, public posts)
+  carry NONE of the opening line, the "Sent by" line, the receipt line or a Verified
+  line. AI is assumed. Internal posts (team-only threads, agent notes, email to the
+  team) keep the opening line and the receipt. For client-facing work, record the
+  receipt, the read-back and the posted recording ID in the client ledger instead.
 - The receipt line never claims a review that did not happen.

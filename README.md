@@ -115,12 +115,10 @@ cold install through client delivery, including both data-source setups.
 
 ## Roadmap
 
-- **Persistent MCP authorization: solved 2026-09-29.** The daily reauth was
-  the server keeping OAuth tokens in memory and losing them on every Cloud Run
-  restart. The Cloud Run sequence in `shared/frameworks/mcp-setup-guide.md`
-  now deploys with a Firestore token store; a forced restart followed by a
-  working query with no reconnect is the acceptance test. Keep the email
-  pipeline wired as the fallback anyway; it costs nothing.
+- **Persistent MCP authorization.** Current Google Ads MCP setups can require
+  frequent reauthorization, which is the main blocker between ~90% autonomous
+  weekly runs and fully hands-off scheduled runs. Until it's solved, keep the
+  email pipeline wired as the fallback for scheduled runs.
 - **Deeper mid-cycle data pulls.** The analyzer already answers its own
   questions with follow-up MCP pulls; extending that pattern to more sources
   (page speed, keyword research, analytics) is ongoing.

@@ -1,6 +1,12 @@
 # Ad Copy Recommendations, Summit Dumpster Rental
 ## Generated: 2026-04-24
 
+> **Pre-1.6.0 sample, kept for history. Do not copy from it.** Headline 5 and
+> Description 1 advertise a 10-yard size the real business does not carry; the
+> 1.5.0 skill had no fact check against the client's website. From 1.6.0 every
+> line must cite a source and every claim must be on the client's fact sheet
+> (`../frameworks/copy-facts-template.md`).
+
 > Anonymized **sample output** from `google-ads-copy-optimizer` for the Summit
 > Dumpster Rental account (an earlier cycle, 2026-04-24). Included to show the
 > copy-optimizer's output format. It is a separate sample, not the dispatch from

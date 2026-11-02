@@ -332,11 +332,20 @@ trace-check as a fresh read of the MAA against the summary (a subagent is ideal)
 - Action handling: internal-only items dropped, "See Action N" references
   re-checked after renumbering.
 
-## Agent identification (1.5.0)
+## Agent identification (1.5.0, audience rule changed 2026-10-02)
 
-Both outputs open with the identification line and close with the receipt line
-from `../../shared/frameworks/agent-receipt.md`: first line
+**Client-facing thread (the usual case for a client view):** neither output
+carries the identification line, the "Sent by" line, the agent receipt or a
+Verified line. The report opens on its title and ends on the Action list. AI is
+assumed (Dennis's direction, relayed by Daniel 2026-10-02; same rule as
+`clients/_shared/agent-receipt.md`). After the operator posts, read the comment
+back from Basecamp and record the recording ID and the read-back in the client
+ledger instead.
+
+**Internal thread (team-only):** keep both lines from
+`../../shared/frameworks/agent-receipt.md`: first line
 `Automated weekly Google Ads MAA by the google-ads-analyzer agent, hardened by google-ads-reviewer, rendered by google-ads-client-view. {Client}, {date}.`
-and last lines `Sent by google-ads-client-view / {operator}'s desk` / `Agent receipt: Basecamp — google-ads-client-view [Claude] · action: drafted · human review: reviewed by {operator} before posting`.
-The operator may move the identification line below the title but may not
-remove either line.
+and last lines `Sent by google-ads-client-view / {operator}'s desk` /
+`Agent receipt: Basecamp — google-ads-client-view [Claude] · action: drafted · human review: reviewed by {operator} before posting`.
+
+Check the thread's audience in the client ledger (section 1) before rendering.

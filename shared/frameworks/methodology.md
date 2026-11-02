@@ -70,6 +70,8 @@ execute immediately:
 | Below-average Landing Page Experience, or strong CTR + zero conversions for 2+ weeks | `google-ads-lp-auditor` | Landing page URL, current ad copy, QS data, campaign context |
 | Ad group restructure needed | `google-ads-change-scripts` | Keywords to move, source/destination ad groups, match types |
 | Ad rated POOR/AVERAGE strength | `google-ads-copy-optimizer` | Current headlines/descriptions, strength rating, top search terms |
+| Live ad claim contradicted by the client's website | `google-ads-copy-optimizer` (correction, foundation-level) | Ad ID, the line, the contradicting page |
+| Assets rated LOW two cycles running | `google-ads-copy-optimizer` | Ad group, LOW assets, search terms, earlier copy tests |
 
 `google-ads-script` sits underneath all of this, it builds the data pipeline
 (see `data-pipeline-contract.md`) and other ongoing automation.

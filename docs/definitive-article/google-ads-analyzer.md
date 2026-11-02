@@ -4,7 +4,7 @@ v3, 2026-09-15: graded against the house article rubric and rewritten for it: no
 Client names removed throughout. The two July run articles it links to still carry their original titles.
 Images: five-stage pipeline diagram v3 uploaded 2026-09-15 as media 77078. Byline comes from the theme (By Daniel Goodrich), as on the live page.
 Datepublished stays 2026-07-10. dateModified becomes the publish date. Staged as WordPress draft post 77077, separate from live post 72458.
-Drafted by Claude [claude-fable-5-1]. Human review: not yet.
+Drafted by Claude [claude-fable-5-1]. Reviewed by Daniel Goodrich and published over the live post 72458 on 2026-09-15; read back live. The staging draft 77077 was briefly published as a second URL and taken down the same day.
 -->
 
 # The Google Ads MAA Agent: Weekly Ads Management, Run by AI
@@ -278,4 +278,3 @@ The origin post for this system, with the initial three-piece setup, is on Blitz
 
 Run it yourself this week. The repository linked in the opening has everything, and script-based setup takes about 20 minutes. Dennis Yu teaches MAA inside the [AI Builder Program](https://localservicespotlight.com/ai-builder-program/) and works through your own account's reports with you. To have the agent run on your account with our team reviewing every report, see [our Google Ads management service](https://localservicespotlight.com/services/).
 
-Originally published July 10, 2026. Updated September 2026 for the five-stage process.

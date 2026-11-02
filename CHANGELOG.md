@@ -1,19 +1,29 @@
 # Changelog
 
-## 1.5.1, 2026-09-29 (docs only)
+## 1.6.0, 2026-10-19 (BlitzBase copy only; not yet pushed to the public repo)
 
-- `shared/frameworks/mcp-setup-guide.md`: Cloud Run sequence rewritten around
-  the production deployment: Firestore token store, JWT signing key and
-  storage encryption key, secrets in Secret Manager, `--min-instances 1`,
-  two upstream build traps (fastmcp version assert in the Dockerfile, Artifact
-  Registry repo name), and a forced-restart acceptance test. The
-  "reauthorization" limitation is closed with its real cause: the in-memory
-  token store, wiped on every instance restart.
-- README roadmap, ONBOARDING-AGENCY (Phase 0, Phase 1, troubleshooting) and
-  WALKTHROUGH (A3, troubleshooting) updated to match. ONBOARDING gains the
-  team-member path: join an existing server by URL with your own Google
-  sign-in, no build.
-- No skill changes.
+Copy optimizer rebuilt around sources. Driven by a live dumpster account where
+1.5.0 copy advertised a 10-yard size the business does not carry and a review
+count that later went stale, both still serving months on, and by the
+operator's review that the skill "didn't try to pull from the website or tie to
+any particular data points."
+
+- `skills/google-ads-copy-optimizer/SKILL.md` rewritten: ledger first; a dated
+  fact sheet built from the client's website and Google Business Profile; the
+  landing page's own language recorded per final URL; a fact check of every
+  live ad line (Supported / Contradicted / Unsupported) before any writing;
+  90-day search terms, earlier copy tests and asset ratings read before
+  proposing; every proposed line cites its source; one test per ad group with
+  a decides-on metric and a read date under the evidence gates. Contradicted
+  claims are corrections, foundation-level and exempt from gates 1 and 2.
+- New `shared/frameworks/copy-facts-template.md` (the fact sheet).
+- New `skills/google-ads-copy-optimizer/references/copy-patterns.md`: the old
+  angle framework with every concrete claim replaced by a placeholder filled
+  from the fact sheet.
+- Analyzer and methodology dispatch tables: two new triggers (a contradicted
+  live claim; assets rated LOW two cycles running).
+- `shared/examples/SummitDumpster_AdCopy_2026-04-24.md`: banner marking it as a
+  pre-1.6.0 sample with a known factual error.
 
 ## 1.5.0, 2026-09-06 (analyzer SKILL.md revised 2026-09-15 for the Task Library review)
 
@@ -356,7 +366,7 @@ distribution:
 - google-ads-client-view (final render step: client-facing report + trend charts)
 
 Changes made for distribution:
-- Removed personal/workspace-specific output paths; output location is now
+- Removed internal/workspace-specific output paths; output location is now
   configurable (see CONFIGURATION.md).
 - Removed references to private vault/knowledge-base paths. The MAA methodology
   and data-pipeline contract are bundled under `shared/frameworks/` so the
