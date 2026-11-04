@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0, 2026-10-19 (BlitzBase copy only; not yet pushed to the public repo)
+## 1.6.0, 2026-10-19 (synced to the public repo 2026-11-02)
 
 Copy optimizer rebuilt around sources. Driven by a live dumpster account where
 1.5.0 copy advertised a 10-yard size the business does not carry and a review
