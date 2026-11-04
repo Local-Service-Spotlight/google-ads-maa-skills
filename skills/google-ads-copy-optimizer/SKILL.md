@@ -15,7 +15,7 @@ description: >
 category: Strategy & Measurement
 stage: —
 status: needs-work
-version: 1.6.0 (BlitzBase, 2026-10-19; not yet pushed to the public repo)
+version: 1.6.0 (BlitzBase, 2026-10-19)
 ---
 
 # Google Ads Copy Optimizer (1.6.0)

@@ -1,9 +1,9 @@
 {
   "name": "google-ads-maa-skills",
   "description": "Google Ads MAA skill suite for local service businesses: onboarding (ledger bootstrap), daily exceptions check, analyzer (Metrics \u2192 Analysis \u2192 Action, ledger-first, evidence-gated), reviewer/hardener, copy optimizer, change scripts, landing-page auditor, script builder, and client-view renderer. Pairs with the read-only Google Ads MCP as the primary data source.",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "author": {
-    "name": "Goodrich-Dev",
+    "name": "Local-Service-Spotlight",
     "url": "https://github.com/Local-Service-Spotlight/google-ads-maa-skills"
   },
   "homepage": "https://github.com/Local-Service-Spotlight/google-ads-maa-skills",

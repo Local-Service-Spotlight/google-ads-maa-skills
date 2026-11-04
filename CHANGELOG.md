@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.6.1, 2026-11-04 (docs and metadata only)
+
+Restored the 1.5.1 docs lost in the 1.6.0 upload. The 1.6.0 upload was built
+on the 1.5.0 tree, so it shipped the 1.5.0 copies of three docs and silently
+rolled back 1.5.1. 1.6.0 made no changes of its own to those three files, so
+nothing from 1.6.0 is lost by restoring them.
+
+- `shared/frameworks/mcp-setup-guide.md`, `ONBOARDING-AGENCY.md` and
+  `WALKTHROUGH.md` restored to their 1.5.1 text: Firestore token store Cloud
+  Run sequence, the closed "reauthorization" limitation, the team-member path
+  (join an existing server by URL), and the troubleshooting rewrite.
+- README roadmap: the "Persistent MCP authorization: solved 2026-09-29" bullet
+  restored. The 1.6.0 definitive-article paragraph is unchanged.
+- The 1.5.1 changelog entry restored below 1.6.0.
+- `.claude-plugin/marketplace.json` owner set back to Local-Service-Spotlight
+  (as it was before 1.6.0); `.claude-plugin/plugin.json` author name set to
+  Local-Service-Spotlight. Both manifests at 1.6.1.
+- `.github/CODEOWNERS`: `@dennisyu` is the code owner.
+- `skills/google-ads-copy-optimizer/SKILL.md`: dropped the stale "not yet
+  pushed to the public repo" note from the version line.
+- No skill behavior changes.
+
 ## 1.6.0, 2026-10-19 (synced to the public repo 2026-11-02)
 
 Copy optimizer rebuilt around sources. Driven by a live dumpster account where
@@ -24,6 +46,21 @@ any particular data points."
   live claim; assets rated LOW two cycles running).
 - `shared/examples/SummitDumpster_AdCopy_2026-04-24.md`: banner marking it as a
   pre-1.6.0 sample with a known factual error.
+
+## 1.5.1, 2026-09-29 (docs only)
+
+- `shared/frameworks/mcp-setup-guide.md`: Cloud Run sequence rewritten around
+  the production deployment: Firestore token store, JWT signing key and
+  storage encryption key, secrets in Secret Manager, `--min-instances 1`,
+  two upstream build traps (fastmcp version assert in the Dockerfile, Artifact
+  Registry repo name), and a forced-restart acceptance test. The
+  "reauthorization" limitation is closed with its real cause: the in-memory
+  token store, wiped on every instance restart.
+- README roadmap, ONBOARDING-AGENCY (Phase 0, Phase 1, troubleshooting) and
+  WALKTHROUGH (A3, troubleshooting) updated to match. ONBOARDING gains the
+  team-member path: join an existing server by URL with your own Google
+  sign-in, no build.
+- No skill changes.
 
 ## 1.5.0, 2026-09-06 (analyzer SKILL.md revised 2026-09-15 for the Task Library review)
 
