@@ -25,7 +25,7 @@ service marketing.
 5. **Or automate via email.** Ask for *"a Google Ads script that emails me the
    weekly MAA data"* and the `google-ads-script` skill builds the pipeline so
    future MAAs run from an automatic weekly email. This is also the recommended
-   backup for scheduled runs while MCP authorization persistence is unsolved.
+   backup for scheduled runs, even once the MCP has a persistent token store.
 
 For the complete operating loop, connecting the data source, running the
 analysis, reviewing, and rendering the client report, see **WALKTHROUGH.md**.

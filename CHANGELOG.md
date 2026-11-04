@@ -13,6 +13,9 @@ nothing from 1.6.0 is lost by restoring them.
   (join an existing server by URL), and the troubleshooting rewrite.
 - README roadmap: the "Persistent MCP authorization: solved 2026-09-29" bullet
   restored. The 1.6.0 definitive-article paragraph is unchanged.
+- README quick start, step 5: dropped "while MCP authorization persistence is
+  unsolved", which contradicted the restored roadmap bullet. The email
+  pipeline stays the recommended backup for scheduled runs.
 - The 1.5.1 changelog entry restored below 1.6.0.
 - `.claude-plugin/marketplace.json` owner set back to Local-Service-Spotlight
   (as it was before 1.6.0); `.claude-plugin/plugin.json` author name set to
